@@ -21,3 +21,9 @@ There used to be some incredibly innovative features using the Connected Apps pr
 - Sports Displays could be reused for accelerometer display, perhaps?
 - Smart Things could be a frontend for Home Assistant
 - The GoPro app inspires a dashboard-integrated dashcam control/view interface, perhaps with support for real GoPros
+
+## Unknown Possibilities
+
+The protocol has some other APIs which haven't been fully explored, such as the Map api that takes a KMZ file.
+
+- Add a POI layer to show speed traps
