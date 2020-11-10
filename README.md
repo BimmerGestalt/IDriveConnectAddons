@@ -24,6 +24,7 @@ There used to be some incredibly innovative features using the Connected Apps pr
 
 ## Unknown Possibilities
 
-The protocol has some other APIs which haven't been fully explored, such as the Map api that takes a KMZ file.
+The protocol has some other APIs which haven't been fully explored, such as the Map api that takes a KMZ file. This might enable some fun features:
 
 - Add a POI layer to show speed traps
+- Add a POI layer to show addresses of contacts from the phone's address book
