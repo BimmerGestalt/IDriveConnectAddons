@@ -22,6 +22,13 @@ There used to be some incredibly innovative features using the Connected Apps pr
 - Smart Things could be a frontend for Home Assistant
 - The GoPro app inspires a dashboard-integrated dashcam control/view interface, perhaps with support for real GoPros
 
+## AM App Icons
+
+The car provides a [basic API for adding placeholder icons](https://hufman.github.io/BMWConnectedAnalysis/am/), allowing an icon with any image and label to be placed in a variety of top-level menus. This icon is limited to only triggering a callback when selected, holding no other UI. Combined with the ability to change the name and image at will, this could be creatively used for quick functionality:
+
+- High-level direct access to toggle devices in a smart home
+- Trigger specific Tasker or Triggr actions from the car
+
 ## Unknown Possibilities
 
 The protocol has some other APIs which haven't been fully explored, such as the Map api that takes a KMZ file. This might enable some fun features:
