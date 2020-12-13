@@ -29,9 +29,15 @@ The car provides a [basic API for adding placeholder icons](https://hufman.githu
 - High-level direct access to toggle devices in a smart home
 - Trigger specific Tasker or Triggr actions from the car
 
+## Customizable apps
+
+By using AM App Icons as launchers into other apps, we can essentially create custom apps to provide richer experiences:
+
+- An overview of upcoming traffic obstacles or a way to report them, using blitzer.de for example
+
 ## Unknown Possibilities
 
 The protocol has some other APIs which haven't been fully explored, such as the Map api that takes a KMZ file. This might enable some fun features:
 
-- Add a POI layer to show speed traps
+- Add a POI layer to show speed traps (blitzer.de, for example)
 - Add a POI layer to show addresses of contacts from the phone's address book
