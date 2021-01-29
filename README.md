@@ -21,6 +21,7 @@ There used to be some incredibly innovative features using the Connected Apps pr
 - Sports Displays could be reused for accelerometer display, perhaps?
 - Smart Things could be a frontend for Home Assistant
 - The GoPro app inspires a dashboard-integrated dashcam control/view interface, perhaps with support for real GoPros
+- Perhaps replicate the new IDrive Weather map for cars that don't include it
 
 ## AM App Icons
 
