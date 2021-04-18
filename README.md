@@ -22,6 +22,7 @@ There used to be some incredibly innovative features using the Connected Apps pr
 - Smart Things could be a frontend for Home Assistant
 - The GoPro app inspires a dashboard-integrated dashcam control/view interface, perhaps with support for real GoPros
 - Perhaps replicate the new IDrive Weather map for cars that don't include it
+- Bring OnlineSearch functionality (navigation, calling) to all cars, without relying on the car's own data service
 
 ## AM App Icons
 
