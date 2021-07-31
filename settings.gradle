@@ -1,0 +1,3 @@
+include ':lib'
+include ':cds_gauges'
+rootProject.name = "IDriveConnectAddons"
