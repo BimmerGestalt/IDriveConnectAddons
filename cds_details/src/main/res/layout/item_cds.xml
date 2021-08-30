@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <variable
+            name="item"
+            type="kotlin.Pair&lt;String, me.hufman.idriveconnectaddons.lib.CDSLiveData&gt;" />
+    </data>
+
+    <LinearLayout
+        android:orientation="horizontal" android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="6dp">
+        <TextView
+            android:layout_width="160sp"
+            android:layout_height="wrap_content"
+            android:gravity="end"
+            android:layout_marginEnd="4dp"
+            android:textSize="12sp"
+            android:text="@{item.first}" />
+        <TextView
+            android:layout_width="0dp"
+            android:layout_weight="2"
+            android:layout_height="wrap_content"
+            android:selectAllOnFocus="true"
+            android:textIsSelectable="true"
+            android:focusable="true"
+            android:longClickable="true"
+            android:textSize="12sp"
+            android:text="@{item.second}" />
+    </LinearLayout>
+</layout>
