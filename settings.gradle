@@ -1,3 +1,4 @@
+include ':bimmerscrobbler'
 include ':cds_details'
 include ':cds_gauges'
 include ':lib'

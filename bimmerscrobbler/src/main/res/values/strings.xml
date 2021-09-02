@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Bimmer Scrobbler</string>
+    <string name="lbl_description">This app watches the car data available through Bimmer Gestalt and reports the currently playing music to any installed scrobblers on your phone.</string>
+
+    <string name="lbl_installed">Detected scrobblers:</string>
+    <string name="lbl_installedSLS">Simple Last.FM Scrobbler</string>
+
+    <string name="lbl_connected">Connected</string>
+    <string name="lbl_artist">Artist</string>
+    <string name="lbl_album">Album</string>
+    <string name="lbl_title">Title</string>
+    <string name="lbl_source">Source</string>
+</resources>

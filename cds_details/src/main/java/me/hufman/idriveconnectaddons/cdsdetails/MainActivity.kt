@@ -13,6 +13,7 @@ class MainActivity : AppCompatActivity() {
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		val binding = ActivityMainBinding.inflate(layoutInflater)
+		binding.lifecycleOwner = this
 		binding.viewModel = mainModel
 		setContentView(binding.root)
 
