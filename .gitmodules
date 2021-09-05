@@ -1,0 +1,3 @@
+[submodule "androbd_gestalt/AndrOBD-libplugin"]
+	path = androbd_gestalt/AndrOBD-libplugin
+	url = https://github.com/fr3ts0n/AndrOBD-libplugin.git
