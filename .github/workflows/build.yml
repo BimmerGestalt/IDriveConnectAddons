@@ -1,0 +1,28 @@
+name: build
+
+on:
+  push:
+    branches: '*'
+  pull_request:
+    types: [opened, synchronize]
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout the project
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          submodules: true
+      - name: Validate Gradle Wrapper
+        uses: gradle/wrapper-validation-action@v1
+      - name: Build the project
+        run: ./gradlew assembleDebug
+      - name: Upload APKs
+        uses: actions/upload-artifact@v2
+        with:
+          retention-days: 60
+          name: apk
+          path: |
+            */build/outputs/apk/**/*apk
