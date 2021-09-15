@@ -1,19 +1,33 @@
 # IDriveConnectAddons
 
 The Connected Apps protocol is very powerful and provides an unparalleled convergence experience.
-Here are some ideas for new apps using this functionality.
+While the AAIdrive app focuses on a specific feature set, creative people could implement their own ideas to unlock other functionality!
+
+# Current Integrations
+
+In recent AAIdrive builds, the CDS data is available through an Android Content Provider for any other apps to easily consume while the car is connected.
+A [LiveData subclass](lib/src/main/java/me/hufman/idriveconnectaddons/lib/CDSLiveData.kt) has been implemented to enable incredibly convenient access to this data.
+
+Built on top of this easy CDS access, a few example apps have been provided to inspire other apps:
+
+- [bimmerscrobbler](bimmerscrobbler) watches the car's Multimedia information and announces any currently playing music to Simple Last.FM Scrobbler. Currently, this seems to provide the Bluetooth and USB music metadata, but unfortunately not Radio information.
+- [cds_details](cds_details) provides a list of every single CDS data point provided by the car, with live-updating values.
+- [cds_gauges](cds_gauges) provides a few needle gauges to represent a few select data points from the car.
+
+# Future Ideas
 
 ## Car Data Service
 
-The car provides [so much data](https://hufman.github.io/BMWConnectedAnalysis/cds/), what are good ways to show it to the user?
+The car provides [so much data](https://bimmergestalt.github.io/BMWConnectedAnalysis/cds/), what are possible ways to use it?
 
 - Trip logger, both locally and to the cloud in real-time
-- Scrobbling of car-sourced music such as SiriusXM or USB
-- Live gauges display of some basic performance data, without needing extra hardware
+- Scrobbling of car-sourced music such as SiriusXM or USB (basic implementation in [bimmerscrobbler](bimmerscrobbler))
+- Live gauges display of some basic performance data, without needing extra hardware (simple example in [cds_gauges](cds_gauges))
+- Car race recording, inspired by BMW M Laptimer
 
 ## Legacy Apps
 
-There used to be some incredibly innovative features using the Connected Apps protocol, perhaps they can be brought back and updated?
+There were previously some incredibly innovative features using the Connected Apps protocol, perhaps they can be brought back and updated?
 
 - Official Twitter client could be reused for Mastodon
 - Perhaps integrated with the official RSS News reader
@@ -26,7 +40,8 @@ There used to be some incredibly innovative features using the Connected Apps pr
 
 ## AM App Icons
 
-The car provides a [basic API for adding placeholder icons](https://hufman.github.io/BMWConnectedAnalysis/am/), allowing an icon with any image and label to be placed in a variety of top-level menus. This icon is limited to only triggering a callback when selected, holding no other UI. Combined with the ability to change the name and image at will, this could be creatively used for quick functionality:
+The car provides a [basic API for adding placeholder icons](https://bimmergestalt.github.io/BMWConnectedAnalysis/am/), allowing an icon with any image and label to be placed in a variety of top-level menus.
+This icon is limited to only triggering a callback when selected, holding no other UI. Combined with the ability to change the name and image at will, this could be creatively used for quick functionality:
 
 - High-level direct access to toggle devices in a smart home
 - Trigger specific Tasker or Triggr actions from the car
