@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">AndrOBD BimmerGestalt</string>
+    <string name="lbl_description">This AAIdrive addon shows some car data in the AndrOBD app without needing any extra OBD hardware to be installed.</string>
+
+    <string name="lbl_connectedAndrobd">AndrOBD connected:</string>
+    <string name="lbl_connectedGestalt">Car connected:</string>
+</resources>

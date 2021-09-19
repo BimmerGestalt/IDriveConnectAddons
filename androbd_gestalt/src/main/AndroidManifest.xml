@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="me.hufman.idriveconnectaddons.androbd_gestalt">
+
+    <uses-permission android:name="bimmergestalt.permission.CDS_normal" />
+    <uses-permission android:name="bimmergestalt.permission.CDS_personal" />
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.IDriveConnectAddons">
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
+
+        <!-- AndrOBD plugin receiver -->
+        <!-- For the previous BroadcastReceiver connection -->
+        <receiver android:name=".AndrobdPluginReceiver"
+            android:exported="true"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="com.fr3ts0n.androbd.plugin.IDENTIFY" />
+                <category android:name="com.fr3ts0n.androbd.plugin.REQUEST" />
+            </intent-filter>
+        </receiver>
+
+        <!-- AndrOBD plugin service -->
+        <service android:name=".AndrobdPlugin"
+            android:exported="true"
+            android:enabled="true">
+            <!-- AndrOBD plugin service binding -->
+            <intent-filter>
+                <action android:name="com.fr3ts0n.androbd.plugin.IDENTIFY" />
+                <category android:name="com.fr3ts0n.androbd.plugin.REQUEST" />
+            </intent-filter>
+        </service>
+
+        <!-- Become discoverable in the Addons tab -->
+        <service android:name=".GestaltPlugin">
+            <intent-filter>
+                <action android:name="bimmergestalt.cardata.service" />
+            </intent-filter>
+        </service>
+    </application>
+
+</manifest>
