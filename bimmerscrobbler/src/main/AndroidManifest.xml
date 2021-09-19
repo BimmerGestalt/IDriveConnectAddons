@@ -31,7 +31,7 @@
     <queries>
         <!-- Search for SLS -->
         <intent>
-            <action android:name="com.adam.aslfms.notify.playstatechange" />
+            <action android:name="com.adam.aslfms.notify.playstatechanged" />
         </intent>
     </queries>
 
