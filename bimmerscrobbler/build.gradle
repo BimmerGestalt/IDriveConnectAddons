@@ -9,7 +9,7 @@ android {
     buildToolsVersion "30.0.0"
 
     defaultConfig {
-        applicationId "me.hufman.idriveconnectaddons.bimmerscrobbler"
+        applicationId "io.bimmergestalt.idriveconnectaddons.bimmerscrobbler"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1

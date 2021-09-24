@@ -3,7 +3,7 @@
     <data>
         <variable
             name="item"
-            type="kotlin.Pair&lt;String, me.hufman.idriveconnectaddons.lib.CDSLiveData&gt;" />
+            type="kotlin.Pair&lt;String, io.bimmergestalt.idriveconnectaddons.lib.CDSLiveData&gt;" />
     </data>
 
     <LinearLayout

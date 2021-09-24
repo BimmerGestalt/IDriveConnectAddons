@@ -5,10 +5,10 @@
     <data>
         <variable
             name="viewModel"
-            type="me.hufman.idriveconnectaddons.bimmerscrobbler.MainModel" />
+            type="io.bimmergestalt.idriveconnectaddons.bimmerscrobbler.MainModel" />
         <variable
             name="installedScrobblers"
-            type="me.hufman.idriveconnectaddons.bimmerscrobbler.InstalledScrobblersViewModel" />
+            type="io.bimmergestalt.idriveconnectaddons.bimmerscrobbler.InstalledScrobblersViewModel" />
     </data>
     <LinearLayout
         android:layout_width="match_parent"

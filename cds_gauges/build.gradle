@@ -8,7 +8,7 @@ android {
     compileSdkVersion 29
 
     defaultConfig {
-        applicationId "me.hufman.idriveconnectaddons.cdsgauge"
+        applicationId "io.bimmergestalt.idriveconnectaddons.cdsgauge"
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1

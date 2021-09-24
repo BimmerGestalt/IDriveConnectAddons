@@ -5,7 +5,7 @@
     <data class="MainBinding">
         <variable
             name="data"
-            type="me.hufman.idriveconnectaddons.cdsgauge.MainModel" />
+            type="io.bimmergestalt.idriveconnectaddons.cdsgauge.MainModel" />
     </data>
     <ScrollView
         android:layout_width="match_parent"

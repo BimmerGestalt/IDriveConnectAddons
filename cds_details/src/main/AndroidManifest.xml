@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="me.hufman.idriveconnectaddons.cdsdetails">
+    package="io.bimmergestalt.idriveconnectaddons.cdsdetails">
 
     <uses-permission android:name="io.bimmergestalt.permission.CDS_normal" />
     <uses-permission android:name="io.bimmergestalt.permission.CDS_personal" />

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="me.hufman.idriveconnectaddons.cdsdetails.MainModel" />
+            type="io.bimmergestalt.idriveconnectaddons.cdsdetails.MainModel" />
     </data>
     <LinearLayout
         android:layout_width="match_parent"

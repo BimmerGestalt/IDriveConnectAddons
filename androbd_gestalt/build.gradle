@@ -9,7 +9,7 @@ android {
     buildToolsVersion "30.0.0"
 
     defaultConfig {
-        applicationId "me.hufman.idriveconnectaddons.androbd_gestalt"
+        applicationId "io.bimmergestalt.idriveconnectaddons.androbd_gestalt"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
