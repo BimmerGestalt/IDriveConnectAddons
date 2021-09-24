@@ -5,3 +5,4 @@ include ':cds_details'
 include ':cds_gauges'
 include ':lib'
 rootProject.name = "IDriveConnectAddons"
+include ':screen_mirror'

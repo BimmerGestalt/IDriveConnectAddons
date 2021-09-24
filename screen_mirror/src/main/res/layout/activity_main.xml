@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <import type="io.bimmergestalt.idriveconnectaddons.screenmirror.MirroringState" />
+        <variable
+            name="controller"
+            type="io.bimmergestalt.idriveconnectaddons.screenmirror.MainController" />
+        <variable
+            name="viewModel"
+            type="io.bimmergestalt.idriveconnectaddons.screenmirror.MainModel" />
+    </data>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="8dp"
+        tools:context=".MainActivity"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp"
+            android:text="@string/app_desc" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
+                android:text="@string/lbl_status" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
+                android:text="@{viewModel.mirroringStateText}" />
+        </LinearLayout>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:onClick="@{() -> controller.promptPermission()}"
+            android:visibility="@{viewModel.mirroringState == MirroringState.NOT_ALLOWED}"
+            android:text="@string/btn_grant_auth"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp"
+            android:visibility="@{viewModel.mirroringState == MirroringState.WAITING}"
+            android:text="@string/lbl_open_car" />
+    </LinearLayout>
+
+</layout>
