@@ -17,7 +17,7 @@ class CDSLiveData(
 ): MutableLiveData<JsonObject>() {
     private lateinit var observer: ContentObserver
 
-    val uri = Uri.parse("content://bimmergestalt.cardata.provider/cds/${property.ident}")
+    val uri = Uri.parse("content://io.bimmergestalt.cardata.provider/cds/${property.ident}")
 
     override fun onActive() {
         observer = object : ContentObserver(null) {

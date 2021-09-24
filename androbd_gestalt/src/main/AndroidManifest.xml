@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="me.hufman.idriveconnectaddons.androbd_gestalt">
 
-    <uses-permission android:name="bimmergestalt.permission.CDS_normal" />
-    <uses-permission android:name="bimmergestalt.permission.CDS_personal" />
+    <uses-permission android:name="io.bimmergestalt.permission.CDS_normal" />
+    <uses-permission android:name="io.bimmergestalt.permission.CDS_personal" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -42,7 +42,7 @@
         <!-- Become discoverable in the Addons tab -->
         <service android:name=".GestaltPlugin">
             <intent-filter>
-                <action android:name="bimmergestalt.cardata.service" />
+                <action android:name="io.bimmergestalt.cardata.service" />
             </intent-filter>
         </service>
     </application>
