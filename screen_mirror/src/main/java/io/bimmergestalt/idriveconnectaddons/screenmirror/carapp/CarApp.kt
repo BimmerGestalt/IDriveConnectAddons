@@ -4,9 +4,8 @@ import android.util.Log
 import de.bmw.idrive.BMWRemoting
 import de.bmw.idrive.BMWRemotingServer
 import de.bmw.idrive.BaseBMWRemotingClient
+import io.bimmergestalt.idriveconnectaddons.screenmirror.*
 import io.bimmergestalt.idriveconnectaddons.screenmirror.utils.RHMIUtils.rhmi_setResourceCached
-import io.bimmergestalt.idriveconnectaddons.screenmirror.ScreenMirrorProvider
-import io.bimmergestalt.idriveconnectaddons.screenmirror.TAG
 import io.bimmergestalt.idriveconnectaddons.screenmirror.carapp.views.ImageState
 import io.bimmergestalt.idriveconnectaddons.screenmirror.utils.RHMIDimensions
 import io.bimmergestalt.idriveconnectkit.IDriveConnection
@@ -16,12 +15,14 @@ import io.bimmergestalt.idriveconnectkit.android.security.SecurityAccess
 import io.bimmergestalt.idriveconnectkit.rhmi.*
 
 class CarApp(val iDriveConnectionStatus: IDriveConnectionStatus, securityAccess: SecurityAccess,
-             val carAppResources: CarAppResources, val screenMirrorProvider: ScreenMirrorProvider,
+             val carAppResources: CarAppResources, val androidResources: AndroidResources,
+             val screenMirrorProvider: ScreenMirrorProvider,
              val onEntry: () -> Unit) {
     val carConnection: BMWRemotingServer
-    val carApp: RHMIApplication
+    var amHandle = -1
+    var carApp: RHMIApplication
+    var stateImage: ImageState
 
-    val stateImage: ImageState
     init {
         Log.i(TAG, "Starting connecting")
         val carappListener = CarAppListener()
@@ -37,12 +38,35 @@ class CarApp(val iDriveConnectionStatus: IDriveConnectionStatus, securityAccess:
         val centeredWidth = dimensions.rhmiWidth - 2 * (dimensions.marginLeft + dimensions.paddingLeft)
         screenMirrorProvider.setSize(centeredWidth, dimensions.appHeight)
 
+        createAmApp()
+
         carApp = createRhmiApp()
         stateImage = ImageState(carApp.states.values.first {ImageState.fits(it)}, screenMirrorProvider)
 
-        // todo: create AM app
-
         initWidgets()
+    }
+
+    private fun createAmApp() {
+        if (amHandle < 0) {
+            val handle = carConnection.am_create("0", "\u0000\u0000\u0000\u0000\u0000\u0002\u0000\u0000".toByteArray())
+            carConnection.am_addAppEventHandler(handle, "io.bimmergestalt.idriveconnectaddons.screenmirror")
+            amHandle = handle
+        }
+
+        val amInfo = mutableMapOf<Int, Any>(
+            0 to 145,   // basecore version
+            1 to L.MIRRORING_TITLE,  // app name
+            2 to androidResources.getRaw(R.raw.ic_carapp), // icon
+            3 to "Multimedia",   // section
+            4 to true,
+            5 to 1500,   // weight
+            8 to -1  // mainstateId
+        )
+        // language translations, dunno which one is which
+        for (languageCode in 101..123) {
+            amInfo[languageCode] = L.MIRRORING_TITLE
+        }
+        carConnection.am_registerApp(amHandle, "io.bimmergestalt.idriveconnectaddons.screenmirror", amInfo)
     }
 
     private fun createRhmiApp(): RHMIApplication {
@@ -64,7 +88,22 @@ class CarApp(val iDriveConnectionStatus: IDriveConnectionStatus, securityAccess:
         }
     }
 
-    fun initWidgets() {
+    private fun recreateRhmiApp() {
+        synchronized(carConnection) {
+            val oldApp = carApp
+            if (oldApp is RHMIApplicationWrapper) {
+                // tear down
+                val etchApp = oldApp.unwrap() as RHMIApplicationEtch
+                carConnection.rhmi_dispose(etchApp.rhmiHandle)
+                // recreate
+                carApp = createRhmiApp()
+                stateImage = ImageState(carApp.states.values.first {ImageState.fits(it)}, screenMirrorProvider)
+                initWidgets()
+            }
+        }
+    }
+
+    private fun initWidgets() {
         carApp.components.values.filterIsInstance<RHMIComponent.EntryButton>().forEach {
             it.getAction()?.asHMIAction()?.getTargetModel()?.asRaIntModel()?.value = stateImage.state.id
             it.getAction()?.asRAAction()?.rhmiActionCallback = RHMIActionCallback {
@@ -79,6 +118,25 @@ class CarApp(val iDriveConnectionStatus: IDriveConnectionStatus, securityAccess:
     }
 
     inner class CarAppListener(): BaseBMWRemotingClient() {
+        override fun am_onAppEvent(handle: Int?, ident: String?, appId: String?, event: BMWRemoting.AMEvent?
+        ) {
+            onEntry()
+            val focusEvent = carApp.events.values.filterIsInstance<RHMIEvent.FocusEvent>().first()
+            try {
+                focusEvent.triggerEvent(mapOf(0.toByte() to stateImage.state.id))
+            } catch (e: Exception) {
+                Log.i(TAG, "Failed to trigger focus event for AM icon, recreating RHMI and trying again")
+                try {
+                    recreateRhmiApp()
+                    focusEvent.triggerEvent(mapOf(0.toByte() to stateImage.state.id))
+                } catch (e: Exception) {
+                    Log.e(TAG, "Received exception while handling am_onAppEvent", e)
+                }
+            }
+            Thread.sleep(200)
+            createAmApp()
+        }
+
         override fun rhmi_onActionEvent(handle: Int?, ident: String?, actionId: Int?, args: MutableMap<*, *>?) {
             try {
                 carApp.actions[actionId]?.asRAAction()?.rhmiActionCallback?.onActionEvent(args)

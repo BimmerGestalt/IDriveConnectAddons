@@ -5,6 +5,7 @@ import android.content.res.Configuration
 import java.util.Locale
 
 object L {
+    var APP_NAME = "Screen Mirroring"
     var MIRRORING_TITLE = "Screen Mirroring"
     var PERMISSION_PROMPT = "Please open the phone app to grant screen recording permission"
 
@@ -16,6 +17,7 @@ object L {
             context.createConfigurationContext(localeConf)
         }
 
+        APP_NAME = context.getString(R.string.app_name)
         MIRRORING_TITLE = thisContext.getString(R.string.MIRRORING_TITLE)
         PERMISSION_PROMPT = thisContext.getString(R.string.PERMISSION_PROMPT)
     }

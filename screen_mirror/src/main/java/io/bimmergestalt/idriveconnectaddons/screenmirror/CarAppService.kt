@@ -84,6 +84,7 @@ class CarAppService: Service() {
                     iDriveConnectionStatus,
                     securityAccess,
                     CarAppAssetResources(applicationContext, "smartthings"),
+                    AndroidResources(applicationContext),
                     ScreenMirrorProvider(thread?.handler!!)
                 ) {
                     // start up the notification when we enter the app
