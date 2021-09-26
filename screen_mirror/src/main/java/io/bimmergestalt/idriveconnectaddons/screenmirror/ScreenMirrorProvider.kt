@@ -34,6 +34,8 @@ class ScreenMirrorProvider(val handler: Handler) {
     }
 
     private var size: Pair<Int, Int> = 1280 to 480
+    private var lastFrameTime = 0L
+    private var frameTime = 0       // minimum time each frame should be displayed
 
     /** The surface that VirtualDisplay will render to */
     private var imageReader: ImageReader? = null
@@ -55,6 +57,10 @@ class ScreenMirrorProvider(val handler: Handler) {
      */
     fun setSize(width: Int, height: Int) {
         size = width to height
+    }
+
+    fun setFrameTime(time: Int) {
+        frameTime = time
     }
 
     fun start() {
@@ -83,10 +89,10 @@ class ScreenMirrorProvider(val handler: Handler) {
         fetchImage()
         schedulePoll()
     }
-    fun schedulePoll() {
+    fun schedulePoll(time: Long = 1000L) {
         if (callback != null) {
             handler.removeCallbacks(poll)
-            handler.postDelayed(poll, 1000)
+            handler.postDelayed(poll, time)
         }
     }
 
@@ -132,8 +138,16 @@ class ScreenMirrorProvider(val handler: Handler) {
     }
 
     fun fetchImage() {
+        // enforce the minimum frame time
+        val frameDelay = frameTime - (System.currentTimeMillis() - lastFrameTime)
+        if (frameDelay > 0) {
+            schedulePoll(frameDelay)
+            return
+        }
+
         val image = imageReader?.acquireLatestImage()
         if (image != null) {
+            lastFrameTime = System.currentTimeMillis()
             val jpegData = compressImage(image)
             this.callback?.invoke(jpegData)
             image.close()

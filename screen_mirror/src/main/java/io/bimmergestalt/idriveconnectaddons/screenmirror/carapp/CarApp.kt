@@ -1,9 +1,14 @@
 package io.bimmergestalt.idriveconnectaddons.screenmirror.carapp
 
 import android.util.Log
+import com.google.gson.JsonObject
+import com.google.gson.JsonParser
 import de.bmw.idrive.BMWRemoting
 import de.bmw.idrive.BMWRemotingServer
 import de.bmw.idrive.BaseBMWRemotingClient
+import io.bimmergestalt.idriveconnectaddons.lib.CDS
+import io.bimmergestalt.idriveconnectaddons.lib.GsonNullable.tryAsDouble
+import io.bimmergestalt.idriveconnectaddons.lib.GsonNullable.tryAsJsonPrimitive
 import io.bimmergestalt.idriveconnectaddons.screenmirror.*
 import io.bimmergestalt.idriveconnectaddons.screenmirror.utils.RHMIUtils.rhmi_setResourceCached
 import io.bimmergestalt.idriveconnectaddons.screenmirror.carapp.views.ImageState
@@ -39,6 +44,8 @@ class CarApp(val iDriveConnectionStatus: IDriveConnectionStatus, securityAccess:
         screenMirrorProvider.setSize(centeredWidth, dimensions.appHeight)
 
         createAmApp()
+
+        createCdsSubscription()
 
         carApp = createRhmiApp()
         stateImage = ImageState(carApp.states.values.first {ImageState.fits(it)}, screenMirrorProvider)
@@ -113,6 +120,11 @@ class CarApp(val iDriveConnectionStatus: IDriveConnectionStatus, securityAccess:
         stateImage.initWidgets()
     }
 
+    fun createCdsSubscription() {
+        val cdsHandle = carConnection.cds_create()
+        carConnection.cds_addPropertyChangedEventHandler(cdsHandle, CDS.DRIVING.SPEEDACTUAL.propertyName, CDS.DRIVING.SPEEDACTUAL.ident.toString(), 2000)
+    }
+
     fun onDestroy() {
         screenMirrorProvider.stop()
     }
@@ -161,6 +173,18 @@ class CarApp(val iDriveConnectionStatus: IDriveConnectionStatus, securityAccess:
             }
         }
 
+        override fun cds_onPropertyChangedEvent(handle: Int?, ident: String?, propertyName: String?, propertyValue: String?) {
+            if (propertyName == "driving.speedActual") {
+                val data = JsonParser.parseString(propertyValue) as? JsonObject
+                val speed = data?.tryAsJsonPrimitive("speedActual")?.tryAsDouble ?: 0.0
+                val moving = speed > 0
+                if (!moving) {
+                    screenMirrorProvider.setFrameTime(0)
+                } else {
+                    screenMirrorProvider.setFrameTime(2000)
+                }
+            }
+        }
     }
 
 }
