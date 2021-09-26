@@ -33,13 +33,15 @@ class ScreenMirrorProvider(val handler: Handler) {
         var state = MutableLiveData(MirroringState.NOT_ALLOWED)
     }
 
+    private var size: Pair<Int, Int> = 1280 to 480
+
     /** The surface that VirtualDisplay will render to */
-    var imageReader: ImageReader? = null
+    private var imageReader: ImageReader? = null
 
     /** The VirtualDisplay that represents the mirror
      * We need to detach and reattach imageReader to pause mirroring
      */
-    var display: VirtualDisplay? = null
+    private var display: VirtualDisplay? = null
 
     /** Reused objects to reduce GC load for each frame */
     private var bmp: Bitmap? = null
@@ -47,6 +49,13 @@ class ScreenMirrorProvider(val handler: Handler) {
 
     // will be set while the car app is visible, ready to display images
     var callback: ((ByteArray) -> Unit)? = null
+
+    /**
+     * Sets the virtual screen size, must be done before starting
+     */
+    fun setSize(width: Int, height: Int) {
+        size = width to height
+    }
 
     fun start() {
         createImageReader()
@@ -89,8 +98,7 @@ class ScreenMirrorProvider(val handler: Handler) {
     @SuppressLint("WrongConstant")
     fun createImageReader() {
         if (projection != null && imageReader == null) {
-            // todo - resize based on the car screen dimensions
-            val imageReader = ImageReader.newInstance(1272, 480, PixelFormat.RGBA_8888, 2)
+            val imageReader = ImageReader.newInstance(size.first, size.second, PixelFormat.RGBA_8888, 2)
             imageReader.setOnImageAvailableListener(imageListener, handler)
             val flags = DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR or DisplayManager.VIRTUAL_DISPLAY_FLAG_PUBLIC or DisplayManager.VIRTUAL_DISPLAY_FLAG_PRESENTATION
             val display = try {

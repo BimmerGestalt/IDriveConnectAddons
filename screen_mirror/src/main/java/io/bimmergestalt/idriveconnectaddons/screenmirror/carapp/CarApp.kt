@@ -8,6 +8,7 @@ import io.bimmergestalt.idriveconnectaddons.screenmirror.utils.RHMIUtils.rhmi_se
 import io.bimmergestalt.idriveconnectaddons.screenmirror.ScreenMirrorProvider
 import io.bimmergestalt.idriveconnectaddons.screenmirror.TAG
 import io.bimmergestalt.idriveconnectaddons.screenmirror.carapp.views.ImageState
+import io.bimmergestalt.idriveconnectaddons.screenmirror.utils.RHMIDimensions
 import io.bimmergestalt.idriveconnectkit.IDriveConnection
 import io.bimmergestalt.idriveconnectkit.android.CarAppResources
 import io.bimmergestalt.idriveconnectkit.android.IDriveConnectionStatus
@@ -29,6 +30,12 @@ class CarApp(val iDriveConnectionStatus: IDriveConnectionStatus, securityAccess:
         val sas_challenge = carConnection.sas_certificate(appCert)
         val sas_response = securityAccess.signChallenge(challenge = sas_challenge)
         carConnection.sas_login(sas_response)
+
+        // set the capture size based on the car's screen size
+        val capabilities = carConnection.rhmi_getCapabilities("", 255)
+        val dimensions = RHMIDimensions.create(capabilities as Map<String, String>)
+        val centeredWidth = dimensions.rhmiWidth - 2 * (dimensions.marginLeft + dimensions.paddingLeft)
+        screenMirrorProvider.setSize(centeredWidth, dimensions.appHeight)
 
         carApp = createRhmiApp()
         stateImage = ImageState(carApp.states.values.first {ImageState.fits(it)}, screenMirrorProvider)
