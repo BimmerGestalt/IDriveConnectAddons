@@ -3,7 +3,10 @@
     package="io.bimmergestalt.idriveconnectaddons.cdsgauge">
 
     <uses-permission android:name="io.bimmergestalt.permission.CDS_normal" />
+    <!--
+    Only used to view the VIN, just as a demo
     <uses-permission android:name="io.bimmergestalt.permission.CDS_personal" />
+    -->
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -14,8 +17,6 @@
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
