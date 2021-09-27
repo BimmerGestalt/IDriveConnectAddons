@@ -34,10 +34,15 @@ android {
     }
 }
 
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 
     implementation "androidx.lifecycle:lifecycle-extensions:$androidx_lifecycle_extensions_version"
 
+    implementation 'io.bimmergestalt:IDriveConnectKit:0.1'
     implementation "com.google.code.gson:gson:2.8.6"
 }

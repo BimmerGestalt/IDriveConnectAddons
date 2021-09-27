@@ -7,12 +7,12 @@ import androidx.lifecycle.Observer
 import com.fr3ts0n.androbd.plugin.Plugin
 import com.fr3ts0n.androbd.plugin.PluginInfo
 import io.bimmergestalt.idriveconnectaddons.lib.CDSLiveData
-import io.bimmergestalt.idriveconnectaddons.lib.CDSProperty
 import com.google.gson.JsonObject
 import io.bimmergestalt.idriveconnectaddons.lib.GsonNullable.tryAsDouble
 import io.bimmergestalt.idriveconnectaddons.lib.GsonNullable.tryAsInt
 import io.bimmergestalt.idriveconnectaddons.lib.GsonNullable.tryAsJsonObject
 import io.bimmergestalt.idriveconnectaddons.lib.GsonNullable.tryAsJsonPrimitive
+import io.bimmergestalt.idriveconnectkit.CDSProperty
 
 class AndrobdPlugin: Plugin(), Plugin.DataProvider, Plugin.ConfigurationHandler {
     companion object {

@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.databinding.ObservableArrayList
 import androidx.lifecycle.AndroidViewModel
 import io.bimmergestalt.idriveconnectaddons.lib.CDSLiveData
-import io.bimmergestalt.idriveconnectaddons.lib.CDSProperty
+import io.bimmergestalt.idriveconnectkit.CDSProperty
 import me.tatarka.bindingcollectionadapter2.ItemBinding
 
 class MainModel(app: Application): AndroidViewModel(app) {

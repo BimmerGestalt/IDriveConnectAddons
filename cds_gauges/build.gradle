@@ -35,6 +35,10 @@ android {
     }
 }
 
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+
 dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -49,6 +53,7 @@ dependencies {
     implementation 'com.github.anastr:speedviewlib:1.5.51'
 //    implementation 'com.github.Pygmalion69:Gauge:1.5.2'
     implementation project(path: ':lib')
+    implementation 'io.bimmergestalt:IDriveConnectKit:0.1'
     kapt "com.android.databinding:compiler:$android_plugin_version"
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

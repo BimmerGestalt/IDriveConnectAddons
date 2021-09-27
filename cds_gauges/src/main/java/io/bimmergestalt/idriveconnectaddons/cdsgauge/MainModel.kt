@@ -5,7 +5,6 @@ import android.content.Context
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.google.gson.JsonObject
-import io.bimmergestalt.idriveconnectaddons.lib.CDS
 import io.bimmergestalt.idriveconnectaddons.lib.CDSLiveData
 import io.bimmergestalt.idriveconnectaddons.lib.CDSVehicleUnits
 import io.bimmergestalt.idriveconnectaddons.lib.GsonNullable.tryAsDouble
@@ -15,6 +14,7 @@ import io.bimmergestalt.idriveconnectaddons.lib.GsonNullable.tryAsJsonPrimitive
 import io.bimmergestalt.idriveconnectaddons.lib.GsonNullable.tryAsString
 import io.bimmergestalt.idriveconnectaddons.lib.LiveDataHelpers.combine
 import io.bimmergestalt.idriveconnectaddons.lib.LiveDataHelpers.map
+import io.bimmergestalt.idriveconnectkit.CDS
 
 class MainModel(app: Application): AndroidViewModel(app) {
     val units: LiveData<CDSVehicleUnits> = CDSLiveData(app, CDS.VEHICLE.UNITS).map(CDSVehicleUnits.UNKNOWN) {

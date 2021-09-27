@@ -6,12 +6,12 @@ import android.os.IBinder
 import android.util.Log
 import androidx.lifecycle.Observer
 import io.bimmergestalt.idriveconnectaddons.lib.CDSLiveData
-import io.bimmergestalt.idriveconnectaddons.lib.CDSProperty
 import com.google.gson.JsonObject
 import io.bimmergestalt.idriveconnectaddons.lib.GsonNullable.tryAsInt
 import io.bimmergestalt.idriveconnectaddons.lib.GsonNullable.tryAsJsonObject
 import io.bimmergestalt.idriveconnectaddons.lib.GsonNullable.tryAsJsonPrimitive
 import io.bimmergestalt.idriveconnectaddons.lib.GsonNullable.tryAsString
+import io.bimmergestalt.idriveconnectkit.CDSProperty
 
 /**
  * Needs a service intent to be discoverable in the Addons UI
