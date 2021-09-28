@@ -1,0 +1,127 @@
+plugins {
+    id 'com.android.application'
+    id 'kotlin-android'
+    id 'kotlin-kapt'
+}
+
+repositories {
+    maven { url 'https://jitpack.io' }
+}
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "31.0.0"
+
+    defaultConfig {
+        applicationId "me.hufman.idriveconnectaddons.screen_mirror"
+        minSdkVersion 23
+        targetSdkVersion 30
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
+
+    buildFeatures {
+        dataBinding true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+}
+
+def RHMISources = [
+        "Smartthings": [
+                "com.smartthings.android/com.smartthings.android.p7b": "smartthings/smartthings.p7b",
+                "com.smartthings.android/rhmi/ui_description.xml": "smartthings/rhmi/ui_description.xml",
+                "com.smartthings.android/rhmi/bmw/images.zip": "smartthings/rhmi/bmw/images.zip",
+                "com.smartthings.android/rhmi/common/images.zip": "smartthings/rhmi/common/images.zip",
+                "com.smartthings.android/rhmi/mini/images.zip": "smartthings/rhmi/mini/images.zip",
+        ]
+]
+
+// extract RHMI resources from official apps
+task confirmRHMIResources() {
+    doLast {
+        def smartthingsFound = new FileNameByRegexFinder().getFileNames(file("../external").toString(), /(?i)smartthings.*classic.*\.apk/)
+        if (smartthingsFound.isEmpty()) throw new MissingResourceException("Could not locate Smartthings Classic APK in external directory")
+    }
+}
+
+task extractRHMIResources(type: Copy, dependsOn: confirmRHMIResources) {
+    description "Extracts necessary RHMI resources for compilation"
+
+    def destRoot = "src/main/assets/carapplications"
+
+    def smartthingsFound = new FileNameByRegexFinder().getFileNames(file("../external").toString(), /(?i)smartthings.*classic.*\.apk/)
+
+    def sources = [
+            "Smartthings": smartthingsFound[0]
+    ]
+
+    // actually do the copy
+    sources.each { sourceZip ->
+        // only prepare the CopySpec if a destination file from this zip is missing
+        def missing = RHMISources[sourceZip.key].values().findAll {
+            !file("$destRoot/$it").exists()
+        }
+        if (!missing.isEmpty() && sourceZip.value != null) {
+            RHMISources[sourceZip.key].each { sourceFile ->
+                from({ zipTree(sourceZip.value) }) {
+                    include "assets/carapplications/${sourceFile.key}"
+                    eachFile { it.relativePath = new RelativePath(true, sourceFile.value) }
+                }
+            }
+            if (inputs.sourceFiles.empty) throw new MissingResourceException("Could not locate RHMI Resources in provided APK: ${sourceZip.value}")
+        }
+    }
+    into destRoot
+
+    // declare the list of expected files, to inform Gradle Caching
+    def outputFiles = RHMISources.values().collect({ sourceZip ->
+        sourceZip.values()
+    }).flatten().collect({
+        "$destRoot/$it"
+    })
+    outputs.files outputFiles
+
+    // make extra sure that the correct files were extracted from the APKs
+    doLast {
+        def missing = outputFiles.findAll {
+            !file(it).exists()
+        }
+        if (!missing.isEmpty()) {
+            throw new MissingResourceException("Missing required RHMI files:\n${missing.join("\n")}")
+        }
+    }
+}
+
+preBuild.dependsOn extractRHMIResources
+
+dependencies {
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.core:core-ktx:1.6.0'
+    implementation 'androidx.appcompat:appcompat:1.3.1'
+    implementation 'com.google.android.material:material:1.4.0'
+    implementation 'androidx.activity:activity-ktx:1.3.1'
+    implementation "com.google.code.gson:gson:2.8.6"
+
+    implementation 'io.bimmergestalt:IDriveConnectKit:jitpack_publish-SNAPSHOT'
+    implementation 'io.bimmergestalt:IDriveConnectKitAndroid:jitpack_publish_2-SNAPSHOT'
+    implementation project(path: ':lib')
+
+    testImplementation 'junit:junit:4.+'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.3'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
+}

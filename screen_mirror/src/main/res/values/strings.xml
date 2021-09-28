@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Screen Mirroring</string>
+    <string name="app_desc">This BimmerGestalt addon displays your phone screen in the car! It requires your permission to start mirroring and requires that your screen remain powered on.</string>
+    <string name="notification_requests_channel_name">Mirroring Permission Request</string>
+    <string name="notification_ongoing_channel_name">Mirroring Status</string>
+
+    <string name="lbl_status_not_ready">Screen mirroring not ready</string>
+    <string name="lbl_status_not_allowed">Screen mirroring permission needed</string>
+    <string name="lbl_status_waiting">Screen mirroring ready</string>
+    <string name="lbl_status_active">Screen mirroring active</string>
+    <string name="btn_grant_auth">Grant permission</string>
+    <string name="lbl_status_autoclose">Automatically times out if the car isn\'t connected within a minute</string>
+    <string name="lbl_open_car">Next, open the app in the car</string>
+    <string name="lbl_status">Status:</string>
+    <string name="lbl_grant">Grant</string>
+
+    <!-- Car Strings -->
+    <string name="MIRRORING_TITLE">Screen Mirroring</string>
+    <string name="PERMISSION_PROMPT">Please open the phone app to grant screen recording permission</string>
+</resources>
