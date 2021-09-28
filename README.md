@@ -15,6 +15,10 @@ Built on top of this easy CDS access, a few example apps have been provided to i
 - [cds_details](cds_details) provides a list of every single CDS data point provided by the car, with live-updating values.
 - [cds_gauges](cds_gauges) provides a few needle gauges to represent a few select data points from the car.
 
+There's also the concept of a Car Connection Addon, which starts up and shuts down together with the main car connection. These require implementing the full car app protocol and are much more complicated to develop, but can provide some incredible features:
+
+- [screen_mirror](screen_mirror) adds an app to the car to show a copy of the phone screen on the car's screen.
+
 # Future Ideas
 
 ## Car Data Service
