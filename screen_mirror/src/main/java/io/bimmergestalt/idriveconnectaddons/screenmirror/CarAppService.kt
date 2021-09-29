@@ -81,6 +81,7 @@ class CarAppService: Service() {
 
             L.loadResources(applicationContext)
             thread = CarThread("ScreenMirroring") {
+                Log.i(TAG, "CarThread is ready, starting CarApp")
                 app = CarApp(
                     iDriveConnectionStatus,
                     securityAccess,
@@ -95,6 +96,12 @@ class CarAppService: Service() {
                 }
             }
             thread?.start()
+        } else if (thread?.isAlive != true) {
+            if (thread?.isAlive != true) {
+                Log.i(TAG, "Not connecting to car, because: iDriveConnectionStatus.isConnected=${iDriveConnectionStatus.isConnected} securityAccess.isConnected=${securityAccess.isConnected()}")
+            } else {
+                Log.d(TAG, "CarThread is still running, not trying to start it again")
+            }
         }
     }
 

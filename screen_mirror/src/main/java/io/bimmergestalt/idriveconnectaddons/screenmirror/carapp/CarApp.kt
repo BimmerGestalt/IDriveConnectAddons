@@ -31,7 +31,7 @@ class CarApp(val iDriveConnectionStatus: IDriveConnectionStatus, securityAccess:
     var stateImage: ImageState
 
     init {
-        Log.i(TAG, "Starting connecting")
+        Log.i(TAG, "Starting connecting to car")
         val carappListener = CarAppListener()
         carConnection = IDriveConnection.getEtchConnection(iDriveConnectionStatus.host ?: "127.0.0.1", iDriveConnectionStatus.port ?: 8003, carappListener)
         val appCert = carAppResources.getAppCertificate(iDriveConnectionStatus.brand ?: "")?.readBytes()
@@ -53,6 +53,7 @@ class CarApp(val iDriveConnectionStatus: IDriveConnectionStatus, securityAccess:
         stateImage = ImageState(carApp.states.values.first {ImageState.fits(it)}, screenMirrorProvider)
 
         initWidgets()
+        Log.i(TAG, "CarApp running")
     }
 
     private fun createAmApp() {
