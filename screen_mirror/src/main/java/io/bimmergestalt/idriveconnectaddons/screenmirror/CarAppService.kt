@@ -1,6 +1,7 @@
 package io.bimmergestalt.idriveconnectaddons.screenmirror
 
 import android.app.Service
+import android.app.UiModeManager
 import android.content.Intent
 import android.os.Build
 import android.os.IBinder
@@ -85,6 +86,7 @@ class CarAppService: Service() {
                     securityAccess,
                     CarAppAssetResources(applicationContext, "smartthings"),
                     AndroidResources(applicationContext),
+                    applicationContext.getSystemService(UiModeManager::class.java),
                     ScreenMirrorProvider(thread?.handler!!)
                 ) {
                     // start up the notification when we enter the app

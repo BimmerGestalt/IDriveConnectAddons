@@ -1,5 +1,7 @@
 package io.bimmergestalt.idriveconnectaddons.screenmirror.carapp
 
+import android.app.UiModeManager
+import android.content.res.Configuration
 import android.util.Log
 import com.google.gson.JsonObject
 import com.google.gson.JsonParser
@@ -21,7 +23,7 @@ import io.bimmergestalt.idriveconnectkit.rhmi.*
 
 class CarApp(val iDriveConnectionStatus: IDriveConnectionStatus, securityAccess: SecurityAccess,
              val carAppResources: CarAppResources, val androidResources: AndroidResources,
-             val screenMirrorProvider: ScreenMirrorProvider,
+             val uiModeManager: UiModeManager, val screenMirrorProvider: ScreenMirrorProvider,
              val onEntry: () -> Unit) {
     val carConnection: BMWRemotingServer
     var amHandle = -1
@@ -178,10 +180,11 @@ class CarApp(val iDriveConnectionStatus: IDriveConnectionStatus, securityAccess:
                 val data = JsonParser.parseString(propertyValue) as? JsonObject
                 val speed = data?.tryAsJsonPrimitive("speedActual")?.tryAsDouble ?: 0.0
                 val moving = speed > 0
-                if (!moving) {
-                    screenMirrorProvider.setFrameTime(0)
-                } else {
+                val carMode = uiModeManager.currentModeType == Configuration.UI_MODE_TYPE_CAR
+                if (moving && !carMode) {
                     screenMirrorProvider.setFrameTime(2000)
+                } else {
+                    screenMirrorProvider.setFrameTime(0)
                 }
             }
         }
