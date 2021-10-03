@@ -56,6 +56,7 @@ This icon is limited to only triggering a callback when selected, holding no oth
 By using AM App Icons as launchers into other apps, we can essentially create custom apps to provide richer experiences:
 
 - An overview of upcoming traffic obstacles or a way to report them, using blitzer.de for example
+- An app to view and add to-do task list items, perhaps as voice memos, integrating into an existing tasklist app somehow
 
 ## Unknown Possibilities
 
