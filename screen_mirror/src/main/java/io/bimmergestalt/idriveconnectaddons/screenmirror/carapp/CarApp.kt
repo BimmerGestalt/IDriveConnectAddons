@@ -23,7 +23,7 @@ import io.bimmergestalt.idriveconnectkit.rhmi.*
 
 class CarApp(val iDriveConnectionStatus: IDriveConnectionStatus, securityAccess: SecurityAccess,
              val carAppResources: CarAppResources, val androidResources: AndroidResources,
-             val uiModeManager: UiModeManager, val screenMirrorProvider: ScreenMirrorProvider,
+             val uiModeManager: UiModeManager, val screenMirrorProvider: ScreenMirrorProvider, val interaction: ScreenMirrorInteraction,
              val onEntry: () -> Unit) {
     val carConnection: BMWRemotingServer
     var amHandle = -1
@@ -50,7 +50,7 @@ class CarApp(val iDriveConnectionStatus: IDriveConnectionStatus, securityAccess:
         createCdsSubscription()
 
         carApp = createRhmiApp()
-        stateImage = ImageState(carApp.states.values.first {ImageState.fits(it)}, screenMirrorProvider)
+        stateImage = ImageState(carApp.states.values.first {ImageState.fits(it)}, screenMirrorProvider, interaction)
 
         initWidgets()
         Log.i(TAG, "CarApp running")
@@ -107,7 +107,7 @@ class CarApp(val iDriveConnectionStatus: IDriveConnectionStatus, securityAccess:
                 carConnection.rhmi_dispose(etchApp.rhmiHandle)
                 // recreate
                 carApp = createRhmiApp()
-                stateImage = ImageState(carApp.states.values.first {ImageState.fits(it)}, screenMirrorProvider)
+                stateImage = ImageState(carApp.states.values.first {ImageState.fits(it)}, screenMirrorProvider, interaction)
                 initWidgets()
             }
         }

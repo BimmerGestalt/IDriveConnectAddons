@@ -3,7 +3,6 @@ package io.bimmergestalt.idriveconnectaddons.screenmirror
 import android.app.Service
 import android.app.UiModeManager
 import android.content.Intent
-import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import io.bimmergestalt.idriveconnectaddons.screenmirror.carapp.CarApp
@@ -14,10 +13,12 @@ import io.bimmergestalt.idriveconnectkit.android.security.SecurityAccess
 class CarAppService: Service() {
     var thread: CarThread? = null
     var app: CarApp? = null
+    val focusRectDecorator by lazy { FocusRectDecorator(applicationContext) }
 
     override fun onCreate() {
         super.onCreate()
         SecurityAccess.getInstance(applicationContext).connect()
+        focusRectDecorator.register()
     }
 
     /**
@@ -82,7 +83,9 @@ class CarAppService: Service() {
             L.loadResources(applicationContext)
             thread = CarThread("ScreenMirroring") {
                 Log.i(TAG, "CarThread is ready, starting CarApp")
-                val screenMirrorProvider = ScreenMirrorProvider(thread?.handler!!)
+                val screenMirrorProvider = ScreenMirrorProvider(thread?.handler!!) {
+                    focusRectDecorator.decorate(it)
+                }
                 if (iDriveConnectionStatus.port == 4007) {
                     // running over bluetooth, decimate image quality
                     screenMirrorProvider.jpgQuality = 30
@@ -93,7 +96,8 @@ class CarAppService: Service() {
                     CarAppAssetResources(applicationContext, "smartthings"),
                     AndroidResources(applicationContext),
                     applicationContext.getSystemService(UiModeManager::class.java),
-                    screenMirrorProvider
+                    screenMirrorProvider,
+                    MirroringAccessibilityInteraction(applicationContext)
                 ) {
                     // start up the notification when we enter the app
                     val foreground = NotificationService.shouldBeForeground()
@@ -113,6 +117,7 @@ class CarAppService: Service() {
     override fun onDestroy() {
         super.onDestroy()
 
+        focusRectDecorator.unregister()
         app?.onDestroy()
         NotificationService.stopNotification(applicationContext)
     }

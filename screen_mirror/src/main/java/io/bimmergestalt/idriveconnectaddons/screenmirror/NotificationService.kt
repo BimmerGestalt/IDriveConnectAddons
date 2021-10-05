@@ -79,10 +79,18 @@ class NotificationService: Service() {
             startNotification(true)
         }
     }
+    val inputStateObserver = Observer<Boolean> {
+        // redraw if the state changes
+        if (shouldBeForeground()) {
+            startNotification(true)
+        }
+    }
+
 
     override fun onCreate() {
         super.onCreate()
         ScreenMirrorProvider.state.observeForever(stateObserver)
+        MirroringAccessibilityService.connected.observeForever(inputStateObserver)
     }
 
     override fun onBind(intent: Intent?): IBinder? {
@@ -118,6 +126,12 @@ class NotificationService: Service() {
         val mainActivityIntent = Intent(applicationContext, MainActivity::class.java)
             .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 
+        val inputStateText = if (MirroringAccessibilityService.connected.value == true) {
+            getString(R.string.lbl_inputstatus_enabled)
+        } else {
+            getString(R.string.lbl_inputstatus_notenabled)
+        }
+
         val notificationBuilder = NotificationCompat.Builder(this, ONGOING_CHANNEL_ID)
             .setChannelId(ONGOING_CHANNEL_ID)
             .setPriority(NotificationCompat.PRIORITY_LOW)
@@ -151,12 +165,19 @@ class NotificationService: Service() {
                 notificationBuilder
                     .setStyle(NotificationCompat.BigTextStyle()
                         .bigText(getString(R.string.lbl_status_autoclose)))
+            } else {
+                notificationBuilder
+                    .setStyle(NotificationCompat.BigTextStyle()
+                        .bigText(inputStateText))
             }
         }
         if (ScreenMirrorProvider.state.value == MirroringState.ACTIVE) {
             notificationBuilder
                 .setContentTitle(getText(R.string.lbl_status_active))
                 .setContentIntent(PendingIntent.getActivity(applicationContext, 0, mainActivityIntent, PendingIntent.FLAG_UPDATE_CURRENT))
+            notificationBuilder
+                .setStyle(NotificationCompat.BigTextStyle()
+                    .bigText(inputStateText))
         }
 
         val notification = notificationBuilder.build()
@@ -182,6 +203,7 @@ class NotificationService: Service() {
 
         handler.removeCallbacks(autostop)
         ScreenMirrorProvider.state.removeObserver(stateObserver)
+        MirroringAccessibilityService.connected.removeObserver(inputStateObserver)
         // the notification timed out, or the ScreenMirrorProvider shut down
         // so clear the projection permission
         ScreenMirrorProvider.projection = null

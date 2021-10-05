@@ -23,10 +23,15 @@
             android:layout_height="wrap_content"
             android:paddingBottom="16dp"
             android:text="@string/app_desc" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp"
+            android:text="@string/lbl_restrictions" />
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="16dp"
+            android:paddingBottom="12dp"
             android:orientation="horizontal">
 
             <TextView
@@ -45,20 +50,50 @@
                 android:text="@{viewModel.mirroringStateText}" />
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:paddingBottom="24dp"
+            android:orientation="horizontal">
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:onClick="@{() -> controller.promptPermission()}"
+                android:visibility="@{viewModel.mirroringState == MirroringState.NOT_ALLOWED}"
+                android:text="@string/btn_grant_auth"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="@{viewModel.mirroringState == MirroringState.WAITING}"
+                android:text="@string/lbl_open_car" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="12dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
+                android:text="@{viewModel.inputConnectedText}" />
+        </LinearLayout>
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:onClick="@{() -> controller.promptPermission()}"
-            android:visibility="@{viewModel.mirroringState == MirroringState.NOT_ALLOWED}"
-            android:text="@string/btn_grant_auth"/>
+            android:layout_marginBottom="24dp"
+            android:onClick="@{() -> controller.manageInput()}"
+            android:text="@string/btn_manage"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingBottom="16dp"
-            android:visibility="@{viewModel.mirroringState == MirroringState.WAITING}"
-            android:text="@string/lbl_open_car" />
     </LinearLayout>
 
 </layout>

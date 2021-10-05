@@ -23,4 +23,16 @@ class MainModel: ViewModel() {
             }
         }
     }
+
+    val inputConnected = MirroringAccessibilityService.connected
+    val inputConnectedText: LiveData<Context.() -> String> = inputConnected.map({ getString(R.string.lbl_inputstatus_notenabled) }) {
+        when (it) {
+            true -> {
+                { getString(R.string.lbl_inputstatus_enabled) }
+            }
+            else -> {
+                { getString(R.string.lbl_inputstatus_notenabled) }
+            }
+        }
+    }
 }

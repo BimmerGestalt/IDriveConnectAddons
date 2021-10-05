@@ -1,10 +1,7 @@
 package io.bimmergestalt.idriveconnectaddons.screenmirror
 
 import android.annotation.SuppressLint
-import android.graphics.Bitmap
-import android.graphics.ImageFormat
-import android.graphics.PixelFormat
-import android.graphics.Point
+import android.graphics.*
 import android.hardware.display.DisplayManager
 import android.hardware.display.VirtualDisplay
 import android.media.Image
@@ -15,12 +12,21 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import java.io.ByteArrayOutputStream
 
+class SubCanvas(bmp: Bitmap, val bottomRight: Point): Canvas(bmp) {
+    override fun getWidth(): Int {
+        return bottomRight.x
+    }
+
+    override fun getHeight(): Int {
+        return bottomRight.y
+    }
+}
 enum class MirroringState {
     NOT_ALLOWED,
     WAITING,
     ACTIVE
 }
-class ScreenMirrorProvider(val handler: Handler) {
+class ScreenMirrorProvider(val handler: Handler, val perFrameModify: (Canvas) -> Unit = {}) {
     companion object {
         /** Projection is provided by the RequestActivity after fetching permission */
         var projection: MediaProjection? = null
@@ -48,6 +54,7 @@ class ScreenMirrorProvider(val handler: Handler) {
 
     /** Reused objects to reduce GC load for each frame */
     private var bmp: Bitmap? = null
+    private var canvas: Canvas? = null
     private val jpg = ByteArrayOutputStream()
 
     // will be set while the car app is visible, ready to display images
@@ -167,11 +174,21 @@ class ScreenMirrorProvider(val handler: Handler) {
         val buffer = planes[0].buffer
         val padding = planes[0].rowStride - planes[0].pixelStride * image.width
         val width = image.width + padding / planes[0].pixelStride
-        var bmp = bmp ?: Bitmap.createBitmap(width, image.height, getBitmapConfig(image.format))
-        if (bmp == null || bmp.width != width || bmp.height != image.height) {
-            bmp = Bitmap.createBitmap(width, image.height, getBitmapConfig(image.format))
+        val bmp = run {     // convolutions to make the bmp nullability type happy
+            val bmp = bmp
+            if (bmp == null || bmp.width != width || bmp.height != image.height) {
+                val newBmp = Bitmap.createBitmap(width, image.height, getBitmapConfig(image.format))
+                this.bmp = newBmp
+                canvas = SubCanvas(newBmp, Point(image.width, image.height))
+                newBmp
+            } else {
+                bmp
+            }
         }
         bmp.copyPixelsFromBuffer(buffer)
+
+        // canvas is the same non-null as bmp, this works around it
+        canvas?.let { perFrameModify(it) }
 
         // wish that ByteArrayOutputBuffer wouldn't clone the array in `toByteArray`
         // but it seems that Java doesn't support array slices
