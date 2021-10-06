@@ -1,10 +1,10 @@
 package io.bimmergestalt.idriveconnectaddons.screenmirror
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.ImageFormat
 import android.graphics.PixelFormat
+import android.graphics.Point
 import android.hardware.display.DisplayManager
 import android.hardware.display.VirtualDisplay
 import android.media.Image
@@ -33,9 +33,10 @@ class ScreenMirrorProvider(val handler: Handler) {
         var state = MutableLiveData(MirroringState.NOT_ALLOWED)
     }
 
-    private var size: Pair<Int, Int> = 1280 to 480
+    private var outputSize = Point(100, 100)
     private var lastFrameTime = 0L
-    private var frameTime = 0       // minimum time each frame should be displayed
+    var minFrameTime = 0       // minimum time each frame should be displayed
+    var jpgQuality = 60         // output jpeg quality
 
     /** The surface that VirtualDisplay will render to */
     private var imageReader: ImageReader? = null
@@ -56,11 +57,7 @@ class ScreenMirrorProvider(val handler: Handler) {
      * Sets the virtual screen size, must be done before starting
      */
     fun setSize(width: Int, height: Int) {
-        size = width to height
-    }
-
-    fun setFrameTime(time: Int) {
-        frameTime = time
+        outputSize.set(width, height)
     }
 
     fun start() {
@@ -104,7 +101,7 @@ class ScreenMirrorProvider(val handler: Handler) {
     @SuppressLint("WrongConstant")
     fun createImageReader() {
         if (projection != null && imageReader == null) {
-            val imageReader = ImageReader.newInstance(size.first, size.second, PixelFormat.RGBA_8888, 2)
+            val imageReader = ImageReader.newInstance(outputSize.x, outputSize.y, PixelFormat.RGBA_8888, 2)
             imageReader.setOnImageAvailableListener(imageListener, handler)
             val flags = DisplayManager.VIRTUAL_DISPLAY_FLAG_AUTO_MIRROR or DisplayManager.VIRTUAL_DISPLAY_FLAG_PUBLIC or DisplayManager.VIRTUAL_DISPLAY_FLAG_PRESENTATION
             val display = try {
@@ -139,7 +136,7 @@ class ScreenMirrorProvider(val handler: Handler) {
 
     fun fetchImage() {
         // enforce the minimum frame time
-        val frameDelay = frameTime - (System.currentTimeMillis() - lastFrameTime)
+        val frameDelay = minFrameTime - (System.currentTimeMillis() - lastFrameTime)
         if (frameDelay > 0) {
             schedulePoll(frameDelay)
             return
@@ -179,7 +176,7 @@ class ScreenMirrorProvider(val handler: Handler) {
         // wish that ByteArrayOutputBuffer wouldn't clone the array in `toByteArray`
         // but it seems that Java doesn't support array slices
         jpg.reset()
-        bmp.compress(Bitmap.CompressFormat.JPEG, 65, jpg)
+        bmp.compress(Bitmap.CompressFormat.JPEG, jpgQuality, jpg)
         return jpg.toByteArray()
     }
 }

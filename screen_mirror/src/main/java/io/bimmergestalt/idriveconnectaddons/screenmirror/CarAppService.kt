@@ -82,13 +82,18 @@ class CarAppService: Service() {
             L.loadResources(applicationContext)
             thread = CarThread("ScreenMirroring") {
                 Log.i(TAG, "CarThread is ready, starting CarApp")
+                val screenMirrorProvider = ScreenMirrorProvider(thread?.handler!!)
+                if (iDriveConnectionStatus.port == 4007) {
+                    // running over bluetooth, decimate image quality
+                    screenMirrorProvider.jpgQuality = 30
+                }
                 app = CarApp(
                     iDriveConnectionStatus,
                     securityAccess,
                     CarAppAssetResources(applicationContext, "smartthings"),
                     AndroidResources(applicationContext),
                     applicationContext.getSystemService(UiModeManager::class.java),
-                    ScreenMirrorProvider(thread?.handler!!)
+                    screenMirrorProvider
                 ) {
                     // start up the notification when we enter the app
                     val foreground = NotificationService.shouldBeForeground()
