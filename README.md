@@ -64,3 +64,8 @@ The protocol has some other APIs which haven't been fully explored, such as the 
 
 - Add a POI layer to show speed traps (blitzer.de Flitsmeister Yasonik, for example). OSM has some of [this data](https://wiki.openstreetmap.org/wiki/Relation:enforcement).
 - Add a POI layer to show addresses of contacts from the phone's address book
+
+Turns out this map functionality is less of a POI layer and more like a mini map showing search results, which lends itself to different functionality:
+
+- Reimplement the parking/gas(charging) search functionality from BMW Connected
+- Viewing Redfin/Zillow prices of houses, or nearby open houses to tour
