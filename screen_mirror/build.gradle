@@ -117,8 +117,7 @@ dependencies {
     implementation 'androidx.activity:activity-ktx:1.3.1'
     implementation "com.google.code.gson:gson:2.8.6"
 
-    implementation 'io.bimmergestalt:IDriveConnectKit:jitpack_publish-SNAPSHOT'
-    implementation 'io.bimmergestalt:IDriveConnectKitAndroid:jitpack_publish_2-SNAPSHOT'
+    implementation 'io.bimmergestalt:IDriveConnectKitAndroid:0.2'
     implementation project(path: ':lib')
 
     testImplementation 'junit:junit:4.+'

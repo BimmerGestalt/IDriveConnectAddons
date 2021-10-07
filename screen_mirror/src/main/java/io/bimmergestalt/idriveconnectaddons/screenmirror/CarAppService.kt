@@ -3,10 +3,10 @@ package io.bimmergestalt.idriveconnectaddons.screenmirror
 import android.app.Service
 import android.app.UiModeManager
 import android.content.Intent
-import android.os.Build
 import android.os.IBinder
 import android.util.Log
 import io.bimmergestalt.idriveconnectaddons.screenmirror.carapp.CarApp
+import io.bimmergestalt.idriveconnectkit.android.CarAppAssetResources
 import io.bimmergestalt.idriveconnectkit.android.IDriveConnectionReceiver
 import io.bimmergestalt.idriveconnectkit.android.IDriveConnectionStatus
 import io.bimmergestalt.idriveconnectkit.android.security.SecurityAccess
@@ -25,7 +25,8 @@ class CarAppService: Service() {
      */
     override fun onBind(intent: Intent?): IBinder? {
         intent ?: return null
-        setConnection(intent)
+        IDriveConnectionReceiver().onReceive(applicationContext, intent)
+        startThread()
         return null
     }
 
@@ -37,7 +38,7 @@ class CarAppService: Service() {
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
         intent ?: return START_NOT_STICKY
-        setConnection(intent)
+        IDriveConnectionReceiver().onReceive(applicationContext, intent)
         startThread()
         return START_STICKY
     }
@@ -48,25 +49,6 @@ class CarAppService: Service() {
     override fun onUnbind(intent: Intent?): Boolean {
         IDriveConnectionStatus.reset()
         return super.onUnbind(intent)
-    }
-
-    /**
-     * Parses the connection intent and sets the connection details
-     * todo: Move to IDriveConnectionListener
-     */
-    fun setConnection(intent: Intent) {
-        val brand = intent.getStringExtra("EXTRA_BRAND")
-        val host = intent.getStringExtra("EXTRA_HOST")
-        val port = intent.getIntExtra("EXTRA_PORT", -1)
-        val instanceId = intent.getIntExtra("EXTRA_INSTANCE_ID", -1)
-        Log.i(TAG, "Received connection details: $brand at $host:$port($instanceId)")
-        brand ?: return
-        host ?: return
-        if (port == -1) {
-            return
-        }
-        IDriveConnectionStatus.setConnection(brand, host, port, instanceId)
-        startThread()
     }
 
     /**

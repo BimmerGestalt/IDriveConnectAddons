@@ -51,7 +51,6 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1"
     implementation "com.google.code.gson:gson:2.8.6"
     implementation project(path: ':lib')
-    implementation 'io.bimmergestalt:IDriveConnectKit:0.1'
     implementation 'me.tatarka.bindingcollectionadapter2:bindingcollectionadapter:4.0.0'
     implementation 'me.tatarka.bindingcollectionadapter2:bindingcollectionadapter-recyclerview:4.0.0'
     kapt "com.android.databinding:compiler:$android_plugin_version"

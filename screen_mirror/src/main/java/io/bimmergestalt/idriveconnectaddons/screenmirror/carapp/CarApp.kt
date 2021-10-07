@@ -11,11 +11,11 @@ import de.bmw.idrive.BaseBMWRemotingClient
 import io.bimmergestalt.idriveconnectaddons.lib.GsonNullable.tryAsDouble
 import io.bimmergestalt.idriveconnectaddons.lib.GsonNullable.tryAsJsonPrimitive
 import io.bimmergestalt.idriveconnectaddons.screenmirror.*
-import io.bimmergestalt.idriveconnectaddons.screenmirror.utils.RHMIUtils.rhmi_setResourceCached
 import io.bimmergestalt.idriveconnectaddons.screenmirror.carapp.views.ImageState
-import io.bimmergestalt.idriveconnectaddons.screenmirror.utils.RHMIDimensions
 import io.bimmergestalt.idriveconnectkit.CDS
 import io.bimmergestalt.idriveconnectkit.IDriveConnection
+import io.bimmergestalt.idriveconnectkit.RHMIDimensions
+import io.bimmergestalt.idriveconnectkit.Utils.rhmi_setResourceCached
 import io.bimmergestalt.idriveconnectkit.android.CarAppResources
 import io.bimmergestalt.idriveconnectkit.android.IDriveConnectionStatus
 import io.bimmergestalt.idriveconnectkit.android.security.SecurityAccess
