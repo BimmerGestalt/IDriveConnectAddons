@@ -29,6 +29,7 @@ The car provides [so much data](https://bimmergestalt.github.io/BMWConnectedAnal
 - Scrobbling of car-sourced music such as SiriusXM or USB (basic implementation in [bimmerscrobbler](bimmerscrobbler))
 - Live gauges display of some basic performance data, without needing extra hardware (simple example in [cds_gauges](cds_gauges))
 - Car race recording, inspired by BMW M Laptimer (one approach enabled with [androbd_gestalt](androbd_gestalt))
+- Automatically load VIN from the car to decode the list of options that the car came with
 
 ## Legacy Apps
 
