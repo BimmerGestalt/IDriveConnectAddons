@@ -36,3 +36,35 @@ jobs:
           name: apk
           path: |
             */build/outputs/apk/**/*apk
+
+  release:
+    if: github.ref == 'refs/heads/main'
+    needs: build
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Checkout the project
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - name: Update the latest_build tag
+        run: |
+          git config user.name 'Github Actions'
+          git tag -f -m "Latest Build" latest_build
+          git push -f origin latest_build
+
+      - name: Download project artifacts
+        uses: actions/download-artifact@v2
+        with:
+          name: apk
+      - name: Stage upload directory
+        run: |
+          mkdir dist
+          cp */build/outputs/apk/debug/*apk dist/
+      - name: Upload to Github releases
+        uses: svenstaro/upload-release-action@v2
+        with:
+          tag: latest_build
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file_glob: true
+          file: dist/*
+          overwrite: true
