@@ -54,6 +54,9 @@ class CDSLiveData(
             // not allowed to view this value
             // or doesn't exist yet
             null
+        } catch (e: IllegalArgumentException) {
+            // unknown parameter?
+            null
         }
         cursor?.moveToFirst()
         val data = cursor?.getString(2)

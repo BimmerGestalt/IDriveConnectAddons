@@ -8,6 +8,7 @@ import com.google.gson.JsonParser
 import de.bmw.idrive.BMWRemoting
 import de.bmw.idrive.BMWRemotingServer
 import de.bmw.idrive.BaseBMWRemotingClient
+import io.bimmergestalt.idriveconnectaddons.lib.CarCapabilities
 import io.bimmergestalt.idriveconnectaddons.lib.GsonNullable.tryAsDouble
 import io.bimmergestalt.idriveconnectaddons.lib.GsonNullable.tryAsJsonPrimitive
 import io.bimmergestalt.idriveconnectaddons.screenmirror.*
@@ -22,7 +23,7 @@ import io.bimmergestalt.idriveconnectkit.android.security.SecurityAccess
 import io.bimmergestalt.idriveconnectkit.rhmi.*
 
 class CarApp(val iDriveConnectionStatus: IDriveConnectionStatus, securityAccess: SecurityAccess,
-             val carAppResources: CarAppResources, val androidResources: AndroidResources,
+             val carAppResources: CarAppResources, val androidResources: AndroidResources, val carCapabilities: CarCapabilities,
              val uiModeManager: UiModeManager, val screenMirrorProvider: ScreenMirrorProvider,
              val onEntry: () -> Unit) {
     val carConnection: BMWRemotingServer
@@ -40,7 +41,12 @@ class CarApp(val iDriveConnectionStatus: IDriveConnectionStatus, securityAccess:
         carConnection.sas_login(sas_response)
 
         // set the capture size based on the car's screen size
-        val capabilities = carConnection.rhmi_getCapabilities("", 255)
+        val preloadedCapabilities = carCapabilities.getCapabilities()
+        val capabilities = if (preloadedCapabilities.containsKey("hmi.display-width")) {
+            preloadedCapabilities
+        } else {
+            carConnection.rhmi_getCapabilities("", 255)
+        }
         val dimensions = RHMIDimensions.create(capabilities as Map<String, String>)
         val centeredWidth = dimensions.rhmiWidth - 2 * (dimensions.marginLeft + dimensions.paddingLeft)
         screenMirrorProvider.setSize(centeredWidth, dimensions.appHeight)

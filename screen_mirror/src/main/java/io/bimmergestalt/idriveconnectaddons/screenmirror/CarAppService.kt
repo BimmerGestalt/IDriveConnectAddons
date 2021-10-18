@@ -5,6 +5,7 @@ import android.app.UiModeManager
 import android.content.Intent
 import android.os.IBinder
 import android.util.Log
+import io.bimmergestalt.idriveconnectaddons.lib.CarCapabilities
 import io.bimmergestalt.idriveconnectaddons.screenmirror.carapp.CarApp
 import io.bimmergestalt.idriveconnectkit.android.CarAppAssetResources
 import io.bimmergestalt.idriveconnectkit.android.IDriveConnectionReceiver
@@ -64,6 +65,7 @@ class CarAppService: Service() {
             L.loadResources(applicationContext)
             thread = CarThread("ScreenMirroring") {
                 Log.i(TAG, "CarThread is ready, starting CarApp")
+                val carCapabilities = CarCapabilities(applicationContext)
                 val screenMirrorProvider = ScreenMirrorProvider(thread?.handler!!)
                 if (iDriveConnectionStatus.port == 4007) {
                     // running over bluetooth, decimate image quality
@@ -74,6 +76,7 @@ class CarAppService: Service() {
                     securityAccess,
                     CarAppAssetResources(applicationContext, "smartthings"),
                     AndroidResources(applicationContext),
+                    carCapabilities,
                     applicationContext.getSystemService(UiModeManager::class.java),
                     screenMirrorProvider
                 ) {
