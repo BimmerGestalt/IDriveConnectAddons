@@ -2,22 +2,19 @@ package io.bimmergestalt.idriveconnectaddons.cdsdetails
 
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
-import com.google.gson.GsonBuilder
 import io.bimmergestalt.idriveconnectaddons.lib.CDSLiveData
 
 
 object DataBindingHelpers {
-    val gsonPrinter = GsonBuilder().setPrettyPrinting().create()
-
     /**
      * Format a CDSLiveData to a pretty-printed JSON string
      */
     @JvmStatic
     @BindingAdapter("android:text")
-    fun setImageViewResource(view: TextView, liveData: CDSLiveData) {
+    fun setText(view: TextView, liveData: CDSLiveData) {
         val current = liveData.value
         if (current != null) {
-            view.text = gsonPrinter.toJson(liveData.value).replace("{\n  \"", "{ \"")
+            view.text = current.toString()
         } else {
             view.text = ""
         }

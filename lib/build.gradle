@@ -44,5 +44,4 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-extensions:$androidx_lifecycle_extensions_version"
 
     api 'io.bimmergestalt:IDriveConnectKit:0.2'
-    implementation "com.google.code.gson:gson:2.8.6"
 }

@@ -7,11 +7,6 @@ import androidx.lifecycle.Observer
 import com.fr3ts0n.androbd.plugin.Plugin
 import com.fr3ts0n.androbd.plugin.PluginInfo
 import io.bimmergestalt.idriveconnectaddons.lib.CDSLiveData
-import com.google.gson.JsonObject
-import io.bimmergestalt.idriveconnectaddons.lib.GsonNullable.tryAsDouble
-import io.bimmergestalt.idriveconnectaddons.lib.GsonNullable.tryAsInt
-import io.bimmergestalt.idriveconnectaddons.lib.GsonNullable.tryAsJsonObject
-import io.bimmergestalt.idriveconnectaddons.lib.GsonNullable.tryAsJsonPrimitive
 import io.bimmergestalt.idriveconnectkit.CDSProperty
 
 class AndrobdPlugin: Plugin(), Plugin.DataProvider, Plugin.ConfigurationHandler {
@@ -37,55 +32,55 @@ class AndrobdPlugin: Plugin(), Plugin.DataProvider, Plugin.ConfigurationHandler 
     }
 
     val cdsListeners = mapOf(
-        CDSProperty.DRIVING_ACCELERATORPEDAL to Observer<JsonObject> {
-            val value = it?.tryAsJsonObject("acceleratorPedal")?.tryAsJsonPrimitive("position")?.tryAsInt
+        CDSProperty.DRIVING_ACCELERATORPEDAL to Observer<Map<String, Any>> {
+            val value = it?.get("position") as? Number
             sendDataUpdate("driving.acceleratorPedal", value?.toString())
         },
-        CDSProperty.DRIVING_BRAKECONTACT to Observer<JsonObject> {
-            val value = it?.tryAsJsonPrimitive("brakeContact")?.tryAsInt
+        CDSProperty.DRIVING_BRAKECONTACT to Observer<Map<String, Any>> {
+            val value = it?.get("brakeContact") as? Number
             sendDataUpdate("driving.brakeContact", value?.toString())
         },
-        CDSProperty.DRIVING_CLUTCHPEDAL to Observer<JsonObject> {
-            val value = it?.tryAsJsonObject("clutchPedal")?.tryAsJsonPrimitive("position")?.tryAsInt
+        CDSProperty.DRIVING_CLUTCHPEDAL to Observer<Map<String, Any>> {
+            val value = it?.get("position") as? Number
             sendDataUpdate("driving.clutchPedal", value?.toString())
         },
-        CDSProperty.DRIVING_STEERINGWHEEL to Observer<JsonObject> {
-            val value = it?.tryAsJsonObject("steeringWheel")?.tryAsJsonPrimitive("angle")?.tryAsDouble
+        CDSProperty.DRIVING_STEERINGWHEEL to Observer<Map<String, Any>> {
+            val value = it?.get("angle") as? Number
             sendDataUpdate("driving.steeringWheel", value?.toString())
         },
-        CDSProperty.DRIVING_ACCELERATION to Observer<JsonObject> {
-            val lat = it?.tryAsJsonObject("acceleration")?.tryAsJsonPrimitive("lateral")?.tryAsDouble?.div(9.80665)
+        CDSProperty.DRIVING_ACCELERATION to Observer<Map<String, Any>> {
+            val lat = (it?.get("lateral") as? Number)?.toDouble()?.div(9.80665)
             sendDataUpdate("driving.acceleration.lateral", lat?.toString())
-            val long = it?.tryAsJsonObject("acceleration")?.tryAsJsonPrimitive("longitudinal")?.tryAsDouble?.div(9.80665)
+            val long = (it?.get("longitudinal") as? Number)?.toDouble()?.div(9.80665)
             sendDataUpdate("driving.acceleration.longitudinal", long?.toString())
         },
-        CDSProperty.DRIVING_GEAR to Observer<JsonObject> {
-            sendDataUpdate("driving.gear", it?.tryAsJsonPrimitive("gear")?.tryAsInt?.toString())
+        CDSProperty.DRIVING_GEAR to Observer<Map<String, Any>> {
+            sendDataUpdate("driving.gear", (it?.get("gear") as? Int)?.toString())
         },
-        CDSProperty.DRIVING_SPEEDACTUAL to Observer<JsonObject> {
-            sendDataUpdate("driving.speed", it?.tryAsJsonPrimitive("speedActual")?.tryAsDouble?.toString())
+        CDSProperty.DRIVING_SPEEDACTUAL to Observer<Map<String, Any>> {
+            sendDataUpdate("driving.speed", (it?.get("speedActual") as? Number)?.toString())
         },
-        CDSProperty.ENGINE_CONSUMPTION to Observer<JsonObject> {
-            sendDataUpdate("engine.consumption", it?.tryAsJsonPrimitive("consumption")?.tryAsDouble?.toString())
+        CDSProperty.ENGINE_CONSUMPTION to Observer<Map<String, Any>> {
+            sendDataUpdate("engine.consumption", (it?.get("consumption") as? Number)?.toString())
         },
-        CDSProperty.ENGINE_RPMSPEED to Observer<JsonObject> {
-            sendDataUpdate("engine.rpmSpeed", it?.tryAsJsonPrimitive("RPMSpeed")?.tryAsDouble?.toString())
+        CDSProperty.ENGINE_RPMSPEED to Observer<Map<String, Any>> {
+            sendDataUpdate("engine.rpmSpeed", (it?.get("RPMSpeed") as? Number)?.toString())
         },
-        CDSProperty.ENGINE_TORQUE to Observer<JsonObject> {
-            sendDataUpdate("engine.torque", it?.tryAsJsonPrimitive("torque")?.tryAsDouble?.toString())
+        CDSProperty.ENGINE_TORQUE to Observer<Map<String, Any>> {
+            sendDataUpdate("engine.torque", (it?.get("torque") as? Number)?.toString())
         },
-        CDSProperty.NAVIGATION_GPSPOSITION to Observer<JsonObject> {
-            val lat = it?.tryAsJsonObject("GPSPosition")?.tryAsJsonPrimitive("latitude")?.tryAsDouble
+        CDSProperty.NAVIGATION_GPSPOSITION to Observer<Map<String, Any>> {
+            val lat = it?.get("latitude") as? Number
             sendDataUpdate("navigation.gpsPosition.latitude", lat?.toString())
-            val long = it?.tryAsJsonObject("GPSPosition")?.tryAsJsonPrimitive("longitude")?.tryAsDouble
+            val long = it?.get("longitude") as? Number
             sendDataUpdate("navigation.gpsPosition.longitude", long?.toString())
         },
-        CDSProperty.NAVIGATION_GPSEXTENDEDINFO to Observer<JsonObject> {
-            val altitude = it?.tryAsJsonObject("GPSExtendedInfo")?.tryAsJsonPrimitive("altitude")?.tryAsInt
-            if ((altitude ?: 65530) < 50000) {
+        CDSProperty.NAVIGATION_GPSEXTENDEDINFO to Observer<Map<String, Any>> {
+            val altitude = it?.get("altitude") as? Number
+            if ((altitude?.toInt() ?: 65530) < 50000) {
                 sendDataUpdate("navigation.gpsPosition.altitude", altitude?.toString())
             }
-            val heading = it?.tryAsJsonObject("GPSExtendedInfo")?.tryAsJsonPrimitive("heading")?.tryAsInt
+            val heading = it?.get("heading") as? Number
             sendDataUpdate("navigation.gpsPosition.heading", heading?.toString())
         },
     )

@@ -13,7 +13,7 @@ object DataBindingHelpers {
     }
     @JvmStatic
     @BindingAdapter("sv_speed")
-    fun setSpeed(view: Gauge, value: Double) {
+    fun setSpeed(view: Gauge, value: Number) {
         view.speedTo(value.toFloat(), 500)
     }
 }

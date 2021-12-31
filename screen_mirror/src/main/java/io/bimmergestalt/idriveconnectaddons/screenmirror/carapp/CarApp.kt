@@ -3,14 +3,10 @@ package io.bimmergestalt.idriveconnectaddons.screenmirror.carapp
 import android.app.UiModeManager
 import android.content.res.Configuration
 import android.util.Log
-import com.google.gson.JsonObject
-import com.google.gson.JsonParser
 import de.bmw.idrive.BMWRemoting
 import de.bmw.idrive.BMWRemotingServer
 import de.bmw.idrive.BaseBMWRemotingClient
 import io.bimmergestalt.idriveconnectaddons.lib.CarCapabilities
-import io.bimmergestalt.idriveconnectaddons.lib.GsonNullable.tryAsDouble
-import io.bimmergestalt.idriveconnectaddons.lib.GsonNullable.tryAsJsonPrimitive
 import io.bimmergestalt.idriveconnectaddons.screenmirror.*
 import io.bimmergestalt.idriveconnectaddons.screenmirror.carapp.views.ImageState
 import io.bimmergestalt.idriveconnectkit.CDS
@@ -21,6 +17,8 @@ import io.bimmergestalt.idriveconnectkit.android.CarAppResources
 import io.bimmergestalt.idriveconnectkit.android.IDriveConnectionStatus
 import io.bimmergestalt.idriveconnectkit.android.security.SecurityAccess
 import io.bimmergestalt.idriveconnectkit.rhmi.*
+import org.json.JSONException
+import org.json.JSONObject
 
 class CarApp(val iDriveConnectionStatus: IDriveConnectionStatus, securityAccess: SecurityAccess,
              val carAppResources: CarAppResources, val androidResources: AndroidResources, val carCapabilities: CarCapabilities,
@@ -45,9 +43,9 @@ class CarApp(val iDriveConnectionStatus: IDriveConnectionStatus, securityAccess:
         val capabilities = if (preloadedCapabilities.containsKey("hmi.display-width")) {
             preloadedCapabilities
         } else {
-            carConnection.rhmi_getCapabilities("", 255)
+            carConnection.rhmi_getCapabilities("", 255).map { it.key as String to it.value as String }.toMap()
         }
-        val dimensions = RHMIDimensions.create(capabilities as Map<String, String>)
+        val dimensions = RHMIDimensions.create(capabilities)
         val centeredWidth = dimensions.rhmiWidth - 2 * (dimensions.marginLeft + dimensions.paddingLeft)
         screenMirrorProvider.setSize(centeredWidth, dimensions.appHeight)
 
@@ -184,8 +182,12 @@ class CarApp(val iDriveConnectionStatus: IDriveConnectionStatus, securityAccess:
 
         override fun cds_onPropertyChangedEvent(handle: Int?, ident: String?, propertyName: String?, propertyValue: String?) {
             if (propertyName == "driving.speedActual") {
-                val data = JsonParser.parseString(propertyValue) as? JsonObject
-                val speed = data?.tryAsJsonPrimitive("speedActual")?.tryAsDouble ?: 0.0
+                val data = try {
+                    JSONObject(propertyValue ?: "{}")
+                } catch (e: JSONException) {
+                    JSONObject()
+                }
+                val speed = data.optDouble("speedActual", 0.0)
                 val moving = speed > 0
                 val carMode = uiModeManager.currentModeType == Configuration.UI_MODE_TYPE_CAR
                 if (moving && !carMode) {

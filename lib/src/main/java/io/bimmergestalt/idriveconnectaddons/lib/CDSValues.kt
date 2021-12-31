@@ -1,9 +1,5 @@
 package io.bimmergestalt.idriveconnectaddons.lib
 
-import com.google.gson.JsonObject
-import io.bimmergestalt.idriveconnectaddons.lib.GsonNullable.tryAsInt
-import io.bimmergestalt.idriveconnectaddons.lib.GsonNullable.tryAsJsonObject
-import io.bimmergestalt.idriveconnectaddons.lib.GsonNullable.tryAsJsonPrimitive
 import java.util.*
 
 enum class CDSVehicleLanguage(val value: Int, val locale: Locale) {
@@ -49,8 +45,8 @@ enum class CDSVehicleLanguage(val value: Int, val locale: Locale) {
             } ?: INVALID
         }
 
-        fun fromCdsProperty(value: JsonObject?): CDSVehicleLanguage {
-            return fromValue(value?.get("language")?.asInt)
+        fun fromCdsProperty(value: Map<String, Any>?): CDSVehicleLanguage {
+            return fromValue(value?.get("language") as? Int)
         }
     }
 }
@@ -179,13 +175,12 @@ class CDSVehicleUnits(val consumptionUnits: Consumption, val distanceUnits: Dist
             Fuel.fromValue(null),
             Temperature.fromValue(null)
         )
-        fun fromCdsProperty(value: JsonObject?): CDSVehicleUnits {
-            val units = value?.tryAsJsonObject("units")
+        fun fromCdsProperty(units: Map<String, Any>?): CDSVehicleUnits {
             return CDSVehicleUnits(
-                Consumption.fromValue(units?.tryAsJsonPrimitive("consumption")?.tryAsInt),
-                Distance.fromValue(units?.tryAsJsonPrimitive("distance")?.tryAsInt),
-                Fuel.fromValue(units?.tryAsJsonPrimitive("fuel")?.tryAsInt),
-                Temperature.fromValue(units?.tryAsJsonPrimitive("temperature")?.tryAsInt)
+                Consumption.fromValue(units?.get("consumption") as? Int),
+                Distance.fromValue(units?.get("distance") as? Int),
+                Fuel.fromValue(units?.get("fuel") as? Int),
+                Temperature.fromValue(units?.get("temperature") as? Int)
             )
         }
     }

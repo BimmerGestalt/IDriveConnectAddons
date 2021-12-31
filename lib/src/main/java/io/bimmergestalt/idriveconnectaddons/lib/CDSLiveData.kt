@@ -4,9 +4,8 @@ import android.content.Context
 import android.database.ContentObserver
 import android.net.Uri
 import androidx.lifecycle.MutableLiveData
-import com.google.gson.JsonObject
-import com.google.gson.JsonParser
 import io.bimmergestalt.idriveconnectkit.CDSProperty
+import org.json.JSONObject
 
 /**
  * A LiveData that loads data from a Content Provider
@@ -15,7 +14,7 @@ import io.bimmergestalt.idriveconnectkit.CDSProperty
 class CDSLiveData(
     private val context: Context,
     private val property: CDSProperty
-): MutableLiveData<JsonObject>() {
+): MutableLiveData<Map<String, Any>>() {
     private lateinit var observer: ContentObserver
 
     val uri = Uri.parse("content://io.bimmergestalt.cardata.provider/cds/${property.ident}")
@@ -46,7 +45,7 @@ class CDSLiveData(
         }
     }
 
-    fun getContentProviderValue(): JsonObject? {
+    fun getContentProviderValue(): Map<String, Any>? {
         // running on a background thread, use cursor synchronously
         val cursor = try {
             context.contentResolver.query(uri, null, null, null, null)
@@ -63,9 +62,22 @@ class CDSLiveData(
         cursor?.close()
         data ?: return null
         return try {
-            JsonParser.parseString(data) as? JsonObject
+            parseJsonObject(JSONObject(data))
         } catch (e: Exception) {
             null
         }
+    }
+
+    private fun parseJsonObject(data: JSONObject): Map<String, Any> {
+        val result = HashMap<String, Any>()
+        for (key in data.keys()) {
+            val objectValue = data.optJSONObject(key)
+            if (objectValue != null) {
+                result.putAll(parseJsonObject(objectValue))
+            } else {
+                result[key] = data.get(key)
+            }
+        }
+        return result
     }
 }

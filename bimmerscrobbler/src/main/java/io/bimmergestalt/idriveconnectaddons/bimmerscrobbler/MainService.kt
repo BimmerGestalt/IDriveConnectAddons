@@ -6,11 +6,6 @@ import android.os.IBinder
 import android.util.Log
 import androidx.lifecycle.Observer
 import io.bimmergestalt.idriveconnectaddons.lib.CDSLiveData
-import com.google.gson.JsonObject
-import io.bimmergestalt.idriveconnectaddons.lib.GsonNullable.tryAsInt
-import io.bimmergestalt.idriveconnectaddons.lib.GsonNullable.tryAsJsonObject
-import io.bimmergestalt.idriveconnectaddons.lib.GsonNullable.tryAsJsonPrimitive
-import io.bimmergestalt.idriveconnectaddons.lib.GsonNullable.tryAsString
 import io.bimmergestalt.idriveconnectkit.CDSProperty
 
 /**
@@ -50,12 +45,12 @@ class MainService: Service() {
 	}
 }
 
-class MultimediaObserver(val announcer: ScrobbleAnnouncer): Observer<JsonObject> {
-	override fun onChanged(t: JsonObject?) {
-		val sourceId = t?.tryAsJsonObject("multimedia")?.tryAsJsonPrimitive("source")?.tryAsInt ?: 0
-		val artist = t?.tryAsJsonObject("multimedia")?.tryAsJsonPrimitive("artist")?.tryAsString ?: ""
-		val album = t?.tryAsJsonObject("multimedia")?.tryAsJsonPrimitive("album")?.tryAsString ?: ""
-		val title = t?.tryAsJsonObject("multimedia")?.tryAsJsonPrimitive("title")?.tryAsString ?: ""
+class MultimediaObserver(val announcer: ScrobbleAnnouncer): Observer<Map<String, Any>> {
+	override fun onChanged(t: Map<String, Any>?) {
+		val sourceId = t?.get("source") as? Int ?: 0
+		val artist = t?.get("artist") as? String ?: ""
+		val album = t?.get("album") as? String ?: ""
+		val title = t?.get("title") as? String ?: ""
 		MainModel.source.value = if (sourceId > 0) sourceId.toString() else ""
 		MainModel.artist.value = artist
 		MainModel.album.value = album
