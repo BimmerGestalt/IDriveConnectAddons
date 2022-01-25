@@ -8,6 +8,7 @@ import com.fr3ts0n.androbd.plugin.Plugin
 import com.fr3ts0n.androbd.plugin.PluginInfo
 import io.bimmergestalt.idriveconnectaddons.lib.CDSLiveData
 import io.bimmergestalt.idriveconnectkit.CDSProperty
+import io.bimmergestalt.idriveconnectkit.android.CDSLiveData
 
 class AndrobdPlugin: Plugin(), Plugin.DataProvider, Plugin.ConfigurationHandler {
     companion object {
@@ -119,7 +120,7 @@ class AndrobdPlugin: Plugin(), Plugin.DataProvider, Plugin.ConfigurationHandler 
         // start listening to the car data
         cdsListeners.entries.forEach {
             if (!cdsData.containsKey(it.key)) {
-                val liveData = CDSLiveData(applicationContext, it.key)
+                val liveData = CDSLiveData(applicationContext.contentResolver, it.key)
                 liveData.observeForever(it.value)
             }
         }

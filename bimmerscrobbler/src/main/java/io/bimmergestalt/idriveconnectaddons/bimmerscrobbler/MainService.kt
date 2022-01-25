@@ -17,7 +17,7 @@ class MainService: Service() {
 	}
 
 	val scrobbleAnnouncer by lazy {ScrobbleAnnouncer(this.applicationContext)}
-	val multimedia = CDSLiveData(this, CDSProperty.ENTERTAINMENT_MULTIMEDIA)
+	val multimedia = CDSLiveData(this.contentResolver, CDSProperty.ENTERTAINMENT_MULTIMEDIA)
 	val multimediaObserver by lazy { MultimediaObserver(scrobbleAnnouncer) }
 
 	override fun onCreate() {

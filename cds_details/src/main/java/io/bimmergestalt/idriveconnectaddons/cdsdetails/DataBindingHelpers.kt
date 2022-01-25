@@ -2,7 +2,7 @@ package io.bimmergestalt.idriveconnectaddons.cdsdetails
 
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
-import io.bimmergestalt.idriveconnectaddons.lib.CDSLiveData
+import io.bimmergestalt.idriveconnectkit.android.CDSLiveData
 
 
 object DataBindingHelpers {
