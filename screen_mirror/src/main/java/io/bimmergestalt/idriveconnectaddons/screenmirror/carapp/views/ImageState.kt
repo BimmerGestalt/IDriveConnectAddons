@@ -2,9 +2,10 @@ package io.bimmergestalt.idriveconnectaddons.screenmirror.carapp.views
 
 import io.bimmergestalt.idriveconnectaddons.screenmirror.L
 import io.bimmergestalt.idriveconnectaddons.screenmirror.ScreenMirrorProvider
+import io.bimmergestalt.idriveconnectkit.RHMIDimensions
 import io.bimmergestalt.idriveconnectkit.rhmi.*
 
-class ImageState(val state: RHMIState, val screenMirrorProvider: ScreenMirrorProvider) {
+class ImageState(val state: RHMIState, val screenMirrorProvider: ScreenMirrorProvider, val rhmiDimensions: RHMIDimensions) {
     companion object {
         fun fits(state: RHMIState): Boolean {
             return state is RHMIState.PlainState &&
@@ -25,8 +26,10 @@ class ImageState(val state: RHMIState, val screenMirrorProvider: ScreenMirrorPro
         state.setProperty(RHMIProperty.PropertyId.HMISTATE_TABLETYPE, 3)
         state.setProperty(RHMIProperty.PropertyId.HMISTATE_TABLELAYOUT, "1,0,7")
         state.getTextModel()?.asRaDataModel()?.value = L.MIRRORING_TITLE
-        image.setProperty(RHMIProperty.PropertyId.WIDTH, 1440)
-        image.setProperty(RHMIProperty.PropertyId.HEIGHT, 540)
+        image.setProperty(RHMIProperty.PropertyId.WIDTH, rhmiDimensions.visibleWidth)
+        image.setProperty(RHMIProperty.PropertyId.HEIGHT, rhmiDimensions.visibleHeight)
+        image.setProperty(RHMIProperty.PropertyId.POSITION_X, -rhmiDimensions.paddingLeft)
+        image.setProperty(RHMIProperty.PropertyId.POSITION_Y, -rhmiDimensions.paddingTop)
         infoList.setProperty(RHMIProperty.PropertyId.LIST_COLUMNWIDTH, "*")
         infoList.getModel()?.value = RHMIModel.RaListModel.RHMIListConcrete(1).also {
             it.addRow(arrayOf("${L.PERMISSION_PROMPT}\n"))

@@ -24,10 +24,11 @@ class CarApp(val iDriveConnectionStatus: IDriveConnectionStatus, securityAccess:
              val carAppResources: CarAppResources, val androidResources: AndroidResources, val carCapabilities: CarCapabilities,
              val uiModeManager: UiModeManager, val screenMirrorProvider: ScreenMirrorProvider,
              val onEntry: () -> Unit) {
-    val carConnection: BMWRemotingServer
-    var amHandle = -1
-    var carApp: RHMIApplication
-    var stateImage: ImageState
+    private val carConnection: BMWRemotingServer
+    private val rhmiDimensions: RHMIDimensions
+    private var amHandle = -1
+    private var carApp: RHMIApplication
+    private var stateImage: ImageState
 
     init {
         Log.i(TAG, "Starting connecting to car")
@@ -45,16 +46,16 @@ class CarApp(val iDriveConnectionStatus: IDriveConnectionStatus, securityAccess:
         } else {
             carConnection.rhmi_getCapabilities("", 255).map { it.key as String to it.value as String }.toMap()
         }
-        val dimensions = RHMIDimensions.create(capabilities)
-        val centeredWidth = dimensions.rhmiWidth - 2 * (dimensions.marginLeft + dimensions.paddingLeft)
-        screenMirrorProvider.setSize(centeredWidth, dimensions.appHeight)
+        rhmiDimensions = RHMIDimensions.create(capabilities)
+        val centeredWidth = rhmiDimensions.rhmiWidth - 2 * (rhmiDimensions.marginLeft)
+        screenMirrorProvider.setSize(centeredWidth, rhmiDimensions.visibleHeight)
 
         createAmApp()
 
         createCdsSubscription()
 
         carApp = createRhmiApp()
-        stateImage = ImageState(carApp.states.values.first {ImageState.fits(it)}, screenMirrorProvider)
+        stateImage = ImageState(carApp.states.values.first {ImageState.fits(it)}, screenMirrorProvider, rhmiDimensions)
 
         initWidgets()
         Log.i(TAG, "CarApp running")
@@ -111,7 +112,7 @@ class CarApp(val iDriveConnectionStatus: IDriveConnectionStatus, securityAccess:
                 carConnection.rhmi_dispose(etchApp.rhmiHandle)
                 // recreate
                 carApp = createRhmiApp()
-                stateImage = ImageState(carApp.states.values.first {ImageState.fits(it)}, screenMirrorProvider)
+                stateImage = ImageState(carApp.states.values.first {ImageState.fits(it)}, screenMirrorProvider, rhmiDimensions)
                 initWidgets()
             }
         }

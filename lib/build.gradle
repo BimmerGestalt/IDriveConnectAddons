@@ -43,6 +43,6 @@ dependencies {
 
     implementation "androidx.lifecycle:lifecycle-extensions:$androidx_lifecycle_extensions_version"
 
-    api 'io.bimmergestalt:IDriveConnectKit:0.2'
+    api 'io.bimmergestalt:IDriveConnectKit:0.4'
     api 'io.bimmergestalt:IDriveConnectKitAndroid:0.3'
 }
