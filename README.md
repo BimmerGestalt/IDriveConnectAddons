@@ -18,6 +18,7 @@ Built on top of this easy CDS access, a few example apps have been provided to i
 There's also the concept of a Car Connection Addon, which starts up and shuts down together with the main car connection. These require implementing the full car app protocol and are much more complicated to develop, but can provide some incredible features:
 
 - [screen_mirror](screen_mirror) adds an app to the car to show a copy of the phone screen on the car's screen.
+- [Hass Gestalt](https://github.com/BimmerGestalt/HassGestalt) provides access to Home Assistant dashboards in the car's screen
 
 # Future Ideas
 
@@ -39,7 +40,7 @@ There were previously some incredibly innovative features using the Connected Ap
 - Perhaps integrated with the official RSS News reader
 - Dynamic Music would be fun
 - Sports Displays could be reused for accelerometer display, perhaps?
-- Smart Things could be a frontend for Home Assistant
+- Smart Things could be a frontend for Home Assistant (implemented as [Hass Gestalt](https://github.com/BimmerGestalt/HassGestalt))
 - The GoPro app inspires a dashboard-integrated dashcam control/view interface, perhaps with support for real GoPros
 - Perhaps replicate the new IDrive Weather map for cars that don't include it
 - Bring OnlineSearch functionality (navigation, calling) to all cars, without relying on the car's own data service
