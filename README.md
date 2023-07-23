@@ -27,6 +27,7 @@ There's also the concept of a Car Connection Addon, which starts up and shuts do
 The car provides [so much data](https://bimmergestalt.github.io/BMWConnectedAnalysis/cds/), what are possible ways to use it?
 
 - Trip logger, both locally and to the cloud in real-time
+- Fuel logger, automatically reporting fill-ups to Fuelly or Spritmonitor
 - Scrobbling of car-sourced music such as SiriusXM or USB (basic implementation in [bimmerscrobbler](bimmerscrobbler))
 - Live gauges display of some basic performance data, without needing extra hardware (simple example in [cds_gauges](cds_gauges))
 - Car race recording, inspired by BMW M Laptimer (one approach enabled with [androbd_gestalt](androbd_gestalt))
