@@ -11,13 +11,13 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout the project
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
           submodules: true
 
       - name: Prepare cached external dependencies
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           key: addons_external_${{ hashFiles('.github/actions/download-externals-action/download.sh') }}
           path: |
@@ -30,7 +30,7 @@ jobs:
       - name: Build the project
         run: ./gradlew assembleDebug
       - name: Upload APKs
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           retention-days: 60
           name: apk
@@ -43,11 +43,11 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout the project
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Delete previous release
-        uses: dev-drprasad/delete-older-releases@v0.2.0
+        uses: dev-drprasad/delete-older-releases@v0.2.1
         with:
           keep_latest: 0
           delete_tag_pattern: latest_build
@@ -61,7 +61,7 @@ jobs:
           git push -f origin latest_build
 
       - name: Download project artifacts
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: apk
       - name: Stage upload directory
