@@ -1,9 +1,12 @@
 package io.bimmergestalt.idriveconnectaddons.screenmirror
 
+import android.app.AppOpsManager
 import android.app.Service
 import android.app.UiModeManager
 import android.content.Intent
+import android.os.Build
 import android.os.IBinder
+import android.os.Process
 import android.util.Log
 import io.bimmergestalt.idriveconnectaddons.lib.CarCapabilities
 import io.bimmergestalt.idriveconnectaddons.screenmirror.carapp.CarApp
@@ -52,6 +55,16 @@ class CarAppService: Service() {
         return super.onUnbind(intent)
     }
 
+    private fun hasProjectMediaPermission(): Boolean {
+        val appOps = getSystemService(AppOpsManager::class.java)
+        val mode = if (Build.VERSION.SDK_INT >= 29) {
+            appOps.unsafeCheckOpNoThrow("android:project_media", Process.myUid(), packageName)
+        } else {
+            @Suppress("DEPRECATION")
+            appOps.checkOpNoThrow("android:project_media", Process.myUid(), packageName)
+        }
+        return mode == AppOpsManager.MODE_ALLOWED
+    }
     /**
      * Starts the thread for the car app, if it isn't running
      */
@@ -83,6 +96,11 @@ class CarAppService: Service() {
                     // start up the notification when we enter the app
                     val foreground = NotificationService.shouldBeForeground()
                     NotificationService.startNotification(applicationContext, foreground)
+
+                    // try fetching permission automatically
+                    if (hasProjectMediaPermission()) {
+                        MainController(applicationContext).promptPermission(true)
+                    }
                 }
             }
             thread?.start()

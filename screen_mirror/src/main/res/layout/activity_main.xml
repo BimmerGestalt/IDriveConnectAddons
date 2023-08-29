@@ -49,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:onClick="@{() -> controller.promptPermission()}"
+            android:onClick="@{() -> controller.promptPermission(false)}"
             android:visibility="@{viewModel.mirroringState == MirroringState.NOT_ALLOWED}"
             android:text="@string/btn_grant_auth"/>
 
