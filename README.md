@@ -19,6 +19,7 @@ There's also the concept of a Car Connection Addon, which starts up and shuts do
 
 - [screen_mirror](screen_mirror) adds an app to the car to show a copy of the phone screen on the car's screen.
 - [Hass Gestalt](https://github.com/BimmerGestalt/HassGestalt) provides access to Home Assistant dashboards in the car's screen
+- [ReadYou Gestalt](https://github.com/BimmerGestalt/ReadYou) adds an RSS news app to the car's screen, based on [ReadYou](https://f-droid.org/packages/me.ash.reader/)
 
 # Future Ideas
 
@@ -38,7 +39,7 @@ The car provides [so much data](https://bimmergestalt.github.io/BMWConnectedAnal
 There were previously some incredibly innovative features using the Connected Apps protocol, perhaps they can be brought back and updated?
 
 - Official Twitter client could be reused for Mastodon
-- Perhaps integrated with the official RSS News reader
+- Official RSS News reader (implemented as a [fork of ReadYou](https://github.com/BimmerGestalt/ReadYou))
 - Dynamic Music would be fun
 - Sports Displays could be reused for accelerometer display, perhaps?
 - Smart Things could be a frontend for Home Assistant (implemented as [Hass Gestalt](https://github.com/BimmerGestalt/HassGestalt))
