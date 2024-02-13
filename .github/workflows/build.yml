@@ -27,8 +27,17 @@ jobs:
 
       - name: Validate Gradle Wrapper
         uses: gradle/wrapper-validation-action@v1
+
+      - name: Extract signing key
+        run: "echo '${{ secrets.KEYSTORE_BASE64 }}' | base64 -d > keystore.jks"
+
       - name: Build the project
-        run: ./gradlew assembleDebug
+        run: ./gradlew assembleRelease
+        env:
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEYSTORE_ALIAS: upload
+          KEYSTORE_ALIAS_PASSWORD: ${{ secrets.KEYSTORE_ALIAS_PASSWORD }}
+
       - name: Upload APKs
         uses: actions/upload-artifact@v3
         with:
@@ -67,7 +76,7 @@ jobs:
       - name: Stage upload directory
         run: |
           mkdir dist
-          cp */build/outputs/apk/debug/*apk dist/
+          cp */build/outputs/apk/*/*apk dist/
       - name: Upload to Github releases
         uses: svenstaro/upload-release-action@v2
         with:

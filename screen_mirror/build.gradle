@@ -22,6 +22,17 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        release
+    }
+    if (System.getenv("CI") == "true") {
+        // configure keystore
+        signingConfigs.release.storeFile = file("../keystore.jks")
+        signingConfigs.release.storePassword = System.getenv("KEYSTORE_PASSWORD")
+        signingConfigs.release.keyAlias = System.getenv("KEYSTORE_ALIAS")
+        signingConfigs.release.keyPassword = System.getenv("KEYSTORE_ALIAS_PASSWORD")
+    }
+
     buildFeatures {
         dataBinding true
     }
@@ -29,6 +40,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {
@@ -116,7 +128,7 @@ dependencies {
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.activity:activity-ktx:1.3.1'
 
-    implementation 'io.bimmergestalt:IDriveConnectKitAndroid:0.2'
+    implementation 'io.bimmergestalt:IDriveConnectKitAndroid:0.6'
     implementation project(path: ':lib')
 
     testImplementation 'junit:junit:4.+'
