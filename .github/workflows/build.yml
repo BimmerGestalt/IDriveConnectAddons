@@ -29,9 +29,15 @@ jobs:
         uses: gradle/wrapper-validation-action@v1
 
       - name: Extract signing key
+        if: github.repository == 'BimmerGestalt/IDriveConnectAddons' && github.ref == 'refs/heads/main'
         run: "echo '${{ secrets.KEYSTORE_BASE64 }}' | base64 -d > keystore.jks"
 
-      - name: Build the project
+      - name: Build the project (debug mode)
+        if: github.repository != 'BimmerGestalt/IDriveConnectAddons' || github.ref != 'refs/heads/main'
+        run: ./gradlew assembleDebug
+
+      - name: Build the project (release mode)
+        if: github.repository == 'BimmerGestalt/IDriveConnectAddons' && github.ref == 'refs/heads/main'
         run: ./gradlew assembleRelease
         env:
           KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
