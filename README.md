@@ -66,7 +66,7 @@ By using AM App Icons as launchers into other apps, we can essentially create cu
 
 The protocol has some other APIs which haven't been fully explored, such as the Map api that takes a KMZ file. This might enable some fun features:
 
-- Add a POI layer to show speed traps (blitzer.de Flitsmeister Yasonik, for example). OSM has some of [this data](https://wiki.openstreetmap.org/wiki/Relation:enforcement).
+- Add a POI layer to show speed traps (blitzer.de Flitsmeister Yanosik, for example). OSM has some of [this data](https://wiki.openstreetmap.org/wiki/Relation:enforcement).
 - Add a POI layer to show addresses of contacts from the phone's address book
 
 Turns out this map functionality is less of a POI layer and more like a mini map showing search results, which lends itself to different functionality:
