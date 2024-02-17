@@ -45,13 +45,37 @@
                 android:text="@{viewModel.mirroringStateText}" />
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="16dp"
+            android:orientation="vertical"
+            android:visibility="@{!viewModel.notificationPermission}"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
+                android:text="@string/lbl_notification_auth" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:onClick="@{() -> controller.promptPostNotificationsPermission()}"
+                android:text="@string/btn_grant_notification_auth"/>
+
+        </LinearLayout>
+
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:onClick="@{() -> controller.promptPermission()}"
+            android:onClick="@{() -> controller.promptMirroringPermission()}"
             android:visibility="@{viewModel.mirroringState == MirroringState.NOT_ALLOWED}"
-            android:text="@string/btn_grant_auth"/>
+            android:text="@string/btn_grant_mirror_auth"/>
 
         <TextView
             android:layout_width="wrap_content"

@@ -4,6 +4,7 @@
     <!-- Connect to local etch port -->
     <uses-permission android:name="android.permission.INTERNET" />
     <!-- Provide a foreground service to indicate mirroring status -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <!-- Read the car's screen size from AAIdrive -->
     <uses-permission android:name="io.bimmergestalt.permission.CDS_normal" />
@@ -15,13 +16,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.IDriveConnectAddons">
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
         <activity android:name=".RequestActivity" />
-        <service android:name=".CarAppService">
+        <service android:name=".CarAppService" android:exported="true">
             <intent-filter>
                 <action android:name="io.bimmergestalt.carconnection.service" />
             </intent-filter>

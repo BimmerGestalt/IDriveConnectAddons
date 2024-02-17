@@ -131,8 +131,8 @@ class NotificationService: Service() {
         // or an in-app request to tap to open the prompt for recording permission
         if (ScreenMirrorProvider.state.value == MirroringState.NOT_ALLOWED) {
             notificationBuilder
-                .setContentText(getText(R.string.btn_grant_auth))
-                .setContentIntent(PendingIntent.getActivity(applicationContext, 0, requestActivityIntent, PendingIntent.FLAG_UPDATE_CURRENT))
+                .setContentText(getText(R.string.btn_grant_mirror_auth))
+                .setContentIntent(PendingIntent.getActivity(applicationContext, 0, requestActivityIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE))
             if (!foreground) {
                 // a background request to tap and start the grant flow
                 @Suppress("DEPRECATION")
@@ -145,7 +145,7 @@ class NotificationService: Service() {
         if (ScreenMirrorProvider.state.value == MirroringState.WAITING) {
             notificationBuilder
                 .setContentTitle(getText(R.string.lbl_status_waiting))
-                .setContentIntent(PendingIntent.getActivity(applicationContext, 0, mainActivityIntent, PendingIntent.FLAG_UPDATE_CURRENT))
+                .setContentIntent(PendingIntent.getActivity(applicationContext, 0, mainActivityIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE))
 
             if (!IDriveConnectionStatus.isConnected) {
                 notificationBuilder
@@ -156,7 +156,7 @@ class NotificationService: Service() {
         if (ScreenMirrorProvider.state.value == MirroringState.ACTIVE) {
             notificationBuilder
                 .setContentTitle(getText(R.string.lbl_status_active))
-                .setContentIntent(PendingIntent.getActivity(applicationContext, 0, mainActivityIntent, PendingIntent.FLAG_UPDATE_CURRENT))
+                .setContentIntent(PendingIntent.getActivity(applicationContext, 0, mainActivityIntent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE))
         }
 
         val notification = notificationBuilder.build()
