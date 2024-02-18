@@ -46,11 +46,11 @@ class MainService: Service() {
 }
 
 class MultimediaObserver(val announcer: ScrobbleAnnouncer): Observer<Map<String, Any>> {
-	override fun onChanged(t: Map<String, Any>?) {
-		val sourceId = t?.get("source") as? Int ?: 0
-		val artist = t?.get("artist") as? String ?: ""
-		val album = t?.get("album") as? String ?: ""
-		val title = t?.get("title") as? String ?: ""
+	override fun onChanged(t: Map<String, Any>) {
+		val sourceId = t["source"] as? Int ?: 0
+		val artist = t["artist"] as? String ?: ""
+		val album = t["album"] as? String ?: ""
+		val title = t["title"] as? String ?: ""
 		MainModel.source.value = if (sourceId > 0) sourceId.toString() else ""
 		MainModel.artist.value = artist
 		MainModel.album.value = album

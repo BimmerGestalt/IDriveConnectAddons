@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="io.bimmergestalt.idriveconnectaddons.screenmirror">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <!-- Connect to local etch port -->
     <uses-permission android:name="android.permission.INTERNET" />

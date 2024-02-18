@@ -5,10 +5,10 @@ plugins {
 }
 
 android {
-    compileSdkVersion 29
 
     defaultConfig {
         applicationId "io.bimmergestalt.idriveconnectaddons.cdsgauge"
+        compileSdk 33
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
@@ -33,6 +33,7 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    namespace 'io.bimmergestalt.idriveconnectaddons.cdsgauge'
 }
 
 repositories {

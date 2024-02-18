@@ -5,11 +5,10 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.0"
 
     defaultConfig {
         applicationId "io.bimmergestalt.idriveconnectaddons.androbd_gestalt"
+        compileSdk 33
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1
@@ -34,6 +33,7 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    namespace 'io.bimmergestalt.idriveconnectaddons.androbd_gestalt'
 }
 
 repositories {
