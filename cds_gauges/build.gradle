@@ -16,6 +16,18 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+
+    signingConfigs {
+        release
+    }
+    if (System.getenv("CI") == "true") {
+        // configure keystore
+        signingConfigs.release.storeFile = file("../keystore.jks")
+        signingConfigs.release.storePassword = System.getenv("KEYSTORE_PASSWORD")
+        signingConfigs.release.keyAlias = System.getenv("KEYSTORE_ALIAS")
+        signingConfigs.release.keyPassword = System.getenv("KEYSTORE_ALIAS_PASSWORD")
+    }
+
     buildFeatures {
         dataBinding true
     }
@@ -23,6 +35,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
 
