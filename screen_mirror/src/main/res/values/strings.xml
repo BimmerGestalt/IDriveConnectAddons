@@ -8,7 +8,9 @@
     <string name="lbl_status_not_allowed">Screen mirroring permission needed</string>
     <string name="lbl_status_waiting">Screen mirroring ready</string>
     <string name="lbl_status_active">Screen mirroring active</string>
-    <string name="btn_grant_auth">Grant permission</string>
+    <string name="btn_grant_mirror_auth">Grant mirroring permission</string>
+    <string name="btn_grant_notification_auth">Grant notification permission</string>
+    <string name="lbl_notification_auth">Prompt for mirroring permission as needed:</string>
     <string name="lbl_status_autoclose">Automatically times out if the car isn\'t connected within a minute</string>
     <string name="lbl_open_car">Next, open the app in the car</string>
     <string name="lbl_status">Status:</string>
