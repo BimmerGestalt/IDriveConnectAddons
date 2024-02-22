@@ -9,11 +9,10 @@ repositories {
 }
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "31.0.0"
 
     defaultConfig {
         applicationId "io.bimmergestalt.idriveconnectaddons.screenmirror"
+        compileSdk 33
         minSdkVersion 23
         targetSdkVersion 30
         versionCode 1
@@ -50,6 +49,7 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    namespace 'io.bimmergestalt.idriveconnectaddons.screenmirror'
 }
 
 def RHMISources = [
