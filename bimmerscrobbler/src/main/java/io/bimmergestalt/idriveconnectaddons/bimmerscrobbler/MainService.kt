@@ -16,9 +16,9 @@ class MainService: Service() {
 		const val TAG = "BimmerScrobbler"
 	}
 
-	val scrobbleAnnouncer by lazy {ScrobbleAnnouncer(this.applicationContext)}
-	val multimedia = CDSLiveData(this.contentResolver, CDSProperty.ENTERTAINMENT_MULTIMEDIA)
-	val multimediaObserver by lazy { MultimediaObserver(scrobbleAnnouncer) }
+	private val scrobbleAnnouncer by lazy {ScrobbleAnnouncer(this.applicationContext)}
+	private val multimedia = CDSLiveData(this.contentResolver, CDSProperty.ENTERTAINMENT_MULTIMEDIA)
+	private val multimediaObserver by lazy { MultimediaObserver(scrobbleAnnouncer) }
 
 	override fun onCreate() {
 		super.onCreate()
@@ -45,12 +45,12 @@ class MainService: Service() {
 	}
 }
 
-class MultimediaObserver(val announcer: ScrobbleAnnouncer): Observer<Map<String, Any>> {
-	override fun onChanged(t: Map<String, Any>) {
-		val sourceId = t["source"] as? Int ?: 0
-		val artist = t["artist"] as? String ?: ""
-		val album = t["album"] as? String ?: ""
-		val title = t["title"] as? String ?: ""
+class MultimediaObserver(private val announcer: ScrobbleAnnouncer): Observer<Map<String, Any>> {
+	override fun onChanged(value: Map<String, Any>) {
+		val sourceId = value["source"] as? Int ?: 0
+		val artist = value["artist"] as? String ?: ""
+		val album = value["album"] as? String ?: ""
+		val title = value["title"] as? String ?: ""
 		MainModel.source.value = if (sourceId > 0) sourceId.toString() else ""
 		MainModel.artist.value = artist
 		MainModel.album.value = album
