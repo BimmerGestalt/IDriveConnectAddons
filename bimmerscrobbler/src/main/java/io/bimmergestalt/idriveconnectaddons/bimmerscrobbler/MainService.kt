@@ -16,8 +16,8 @@ class MainService: Service() {
 		const val TAG = "BimmerScrobbler"
 	}
 
-	private val scrobbleAnnouncer by lazy {ScrobbleAnnouncer(this.applicationContext)}
-	private val multimedia = CDSLiveData(this.contentResolver, CDSProperty.ENTERTAINMENT_MULTIMEDIA)
+	private val scrobbleAnnouncer by lazy { ScrobbleAnnouncer(this.applicationContext) }
+	private val multimedia by lazy { CDSLiveData(this.contentResolver, CDSProperty.ENTERTAINMENT_MULTIMEDIA) }
 	private val multimediaObserver by lazy { MultimediaObserver(scrobbleAnnouncer) }
 
 	override fun onCreate() {
