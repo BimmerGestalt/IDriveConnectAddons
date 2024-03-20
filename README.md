@@ -1,7 +1,7 @@
 # IDriveConnectAddons
 
 The Connected Apps protocol is very powerful and provides an unparalleled convergence experience.
-While the AAIdrive app focuses on a specific feature set, creative people could implement their own ideas to unlock other functionality!
+While the AAIdrive app focuses on a specific feature set, addons providing extra functionality have been [built and released](https://github.com/BimmerGestalt/IDriveConnectAddons/releases) and creative people could implement their own ideas to unlock other possibilities!
 
 # Current Integrations
 
@@ -31,7 +31,7 @@ The car provides [so much data](https://bimmergestalt.github.io/BMWConnectedAnal
 - Fuel logger, automatically reporting fill-ups to Fuelly or Spritmonitor
 - Scrobbling of car-sourced music such as SiriusXM or USB (basic implementation in [bimmerscrobbler](bimmerscrobbler))
 - Live gauges display of some basic performance data, without needing extra hardware (simple example in [cds_gauges](cds_gauges))
-- Car race recording, inspired by BMW M Laptimer (one approach enabled with [androbd_gestalt](androbd_gestalt))
+- Car race recording, inspired by BMW M Laptimer (one attempt with [androbd_gestalt](androbd_gestalt))
 - Automatically load VIN from the car to decode the list of options that the car came with
 
 ## Legacy Apps
