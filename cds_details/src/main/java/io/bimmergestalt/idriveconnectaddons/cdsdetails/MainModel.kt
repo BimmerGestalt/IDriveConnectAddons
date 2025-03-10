@@ -10,7 +10,7 @@ import me.tatarka.bindingcollectionadapter2.ItemBinding
 
 class MainModel(app: Application): AndroidViewModel(app) {
     val datapoints = ObservableArrayList<Pair<String, CDSLiveData>>().apply {
-        addAll(CDSProperty.values().map {
+        addAll(CDSProperty.values().sortedBy { it.ident }.map {
             Pair(it.propertyName.replace(".", "\u200B."), CDSLiveData(app.applicationContext.contentResolver, it))
         })
     }

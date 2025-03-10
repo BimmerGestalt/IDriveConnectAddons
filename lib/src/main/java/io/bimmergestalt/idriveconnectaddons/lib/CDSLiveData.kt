@@ -7,14 +7,14 @@ import io.bimmergestalt.idriveconnectkit.android.CDSLiveData
 import io.bimmergestalt.idriveconnectkit.android.CDSLiveDataProvider
 
 fun CDSLiveData(context: Context, property: CDSProperty): CDSLiveData {
-    return CDSLiveData(context.contentResolver, property.ident)
+    return CDSLiveData(context.contentResolver, propertyName=property.propertyName)
 }
 fun CDSLiveData(contentResolver: ContentResolver, property: CDSProperty): CDSLiveData {
-    return CDSLiveData(contentResolver, property.ident)
+    return CDSLiveData(contentResolver, propertyName=property.propertyName)
 }
 
 object CDSLiveDataProvider {
     operator fun CDSLiveDataProvider.get(property: CDSProperty): CDSLiveData {
-        return this[property.ident]
+        return this[property.propertyName]
     }
 }
